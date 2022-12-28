@@ -1,27 +1,25 @@
 #!/bin/bash
 
-# EOF
-echo | bash
-echo | ./minishell
-echo 'EOF OK'
+assert() {
+	echo "[$1]: "
+	# exit status
+	echo "$1" | bash >cmp 2>&-
+	expected=$?
+	echo "$1" | ./minishell >out 2>&-
+	actual=$?
 
-# echo hello
-echo 'echo hello' | bash >cmp
-echo 'echo hello' | ./minishell >out
-diff cmp out
-echo 'echo hello OK'
+	diff cmp out
+	echo '  diff OK'
 
-# exit status
-echo 'grep hoge .' | bash >cmp 2>&-
-expected=$?
-echo 'grep hoge .' | ./minishell >out 2>&-
-actual=$?
+	if [ "$actual" = "$expected" ]; then
+		echo '  status OK'
+	else
+		echo "  status NG, expected $expected but got $actual"
+	fi
+}
 
-diff cmp out
-if [ "$actual" = "$expected" ]; then
-	echo 'status OK'
-else
-	echo "status NG, expected $expected but got $actual"
-fi
+assert ''
+assert 'echo hello'
+assert 'grep hoge .'
 
 echo 'all OK'
