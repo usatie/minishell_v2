@@ -7,12 +7,13 @@ int	ft_system(char *command)
 {
 	pid_t	pid;
 	int		wstatus;
+	char 	*argv[] = {"sh", "-c", command, NULL};
 
 	pid = fork();
 	if (pid == 0)
 	{
 		// child
-		execlp("/bin/sh", "sh", "-c", command, NULL, NULL);
+		execve("/bin/sh", argv, NULL);
 		exit(1);
 	}
 	else
