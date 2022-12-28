@@ -11,6 +11,7 @@ int	main(void)
 		line = readline("minishell$ ");
 		if (line == NULL)
 			break ;
+		system(line);
 		free(line);
 	}
 }
