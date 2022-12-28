@@ -1,6 +1,14 @@
+#include <stdlib.h>
 #include <stdio.h>
+#include <readline/readline.h>
 
 int	main(void)
 {
-	printf("minishell$ ");
+	char	*line;
+
+	while (1)
+	{
+		line = readline("minishell$ ");
+		free(line);
+	}
 }

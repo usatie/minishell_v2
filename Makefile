@@ -1,10 +1,11 @@
 NAME = minishell
 CFLAGS = -Wall -Wextra -Werror
+LIBS  = -lreadline
 
 all: $(NAME)
 
 $(NAME): src/main.c
-	gcc $(CFLAGS) src/main.c -o $(NAME)
+	gcc $(CFLAGS) $(LIBS) src/main.c -o $(NAME)
 
 clean:
 
