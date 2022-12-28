@@ -7,9 +7,9 @@ cleanup() {
 assert() {
 	printf '%-30s:' "\"$1\""
 	# exit status
-	echo "$1" | bash >cmp 2>&-
+	echo -e "$1" | bash >cmp 2>&-
 	expected=$?
-	echo "$1" | ./minishell >out 2>&-
+	echo -e "$1" | ./minishell >out 2>&-
 	actual=$?
 
 	diff cmp out && echo -n '  diff OK' || echo -n '  diff NG'
@@ -25,6 +25,7 @@ assert() {
 assert ''
 assert 'echo hello'
 assert 'grep hoge .'
+assert 'exit\necho hello'
 
 cleanup
 echo 'all OK'
