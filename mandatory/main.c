@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:26:06 by myoshika          #+#    #+#             */
-/*   Updated: 2022/12/28 15:55:01 by myoshika         ###   ########.fr       */
+/*   Updated: 2022/12/28 16:49:00 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@ int	main(void)
 {
 	char	*line;
 
+	rl_outstream = stderr;
 	while (1)
 	{
-		line = readline("minishell$ ");
+		line = readline("minishell> ");
 		if (!line)
-			exit(EXIT_FAILURE);
+			break ;
+		
 		free(line);
 	}
 }
