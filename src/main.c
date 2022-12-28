@@ -9,6 +9,8 @@ int	main(void)
 	while (1)
 	{
 		line = readline("minishell$ ");
+		if (line == NULL)
+			break ;
 		free(line);
 	}
 }
