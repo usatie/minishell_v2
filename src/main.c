@@ -4,14 +4,17 @@
 
 int	main(void)
 {
+	int		status;
 	char	*line;
 
+	status = 0;
 	while (1)
 	{
 		line = readline("minishell$ ");
 		if (line == NULL)
 			break ;
-		system(line);
+		status = system(line);
 		free(line);
 	}
+	exit(WEXITSTATUS(status));
 }
