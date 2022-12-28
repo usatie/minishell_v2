@@ -1,4 +1,6 @@
 NAME = minishell
 
-$(NAME): main.c
-	gcc main.c -o $(NAME)
+INCLUDES = -I ./includes
+
+$(NAME): mandatory/main.c
+	gcc $(INCLUDES) mandatory/main.c -o $(NAME)
