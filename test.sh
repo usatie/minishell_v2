@@ -1,21 +1,21 @@
 #!/bin/bash
 
 assert() {
-	echo "[$1]: "
+	printf '%-30s:' "\"$1\""
 	# exit status
 	echo "$1" | bash >cmp 2>&-
 	expected=$?
 	echo "$1" | ./minishell >out 2>&-
 	actual=$?
 
-	diff cmp out
-	echo '  diff OK'
+	diff cmp out && echo -n '  diff OK' || echo -n '  diff NG'
 
 	if [ "$actual" = "$expected" ]; then
-		echo '  status OK'
+		echo -n '  status OK'
 	else
-		echo "  status NG, expected $expected but got $actual"
+		echo -n "  status NG, expected $expected but got $actual"
 	fi
+	echo
 }
 
 assert ''
