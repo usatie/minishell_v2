@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cleanup() {
+	rm -f cmp out
+}
+
 assert() {
 	printf '%-30s:' "\"$1\""
 	# exit status
@@ -22,4 +26,5 @@ assert ''
 assert 'echo hello'
 assert 'grep hoge .'
 
+cleanup
 echo 'all OK'
