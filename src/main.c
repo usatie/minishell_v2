@@ -6,21 +6,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
-void	fatal_error(const char *msg) __attribute__((noreturn));
-void	err_exit(const char *location, const char *msg, int status) __attribute__((noreturn));
-
-void	fatal_error(const char *msg)
-{
-	dprintf(STDERR_FILENO, "Fatal Error: %s\n", msg);
-	exit(1);
-}
-
-void	err_exit(const char *location, const char *msg, int status)
-{
-	dprintf(STDERR_FILENO, "minishell: %s: %s\n", location, msg);
-	exit(status);
-}
+#include "minishell.h"
 
 char	*search_path(const char *filename)
 {
@@ -93,13 +79,21 @@ int	exec(char *argv[])
 	}
 }
 
-int	interpret(char *const line)
+void	interpret(char *line, int *stat_loc)
 {
-	int		status;
-	char	*argv[] = {line, NULL};
+	t_token	*tok;
+	char	**argv;
 
-	status = exec(argv);
-	return (status);
+	tok = tokenize(line);
+	if (tok->kind == TK_EOF)
+		;
+	else
+	{
+		argv = token_list_to_argv(tok);
+		*stat_loc = exec(argv);
+		free_argv(argv);
+	}
+	free_tok(tok);
 }
 
 int	main(void)
@@ -116,7 +110,7 @@ int	main(void)
 			break ;
 		if (*line)
 			add_history(line);
-		status = interpret(line);
+		interpret(line, &status);
 		free(line);
 	}
 	exit(status);
