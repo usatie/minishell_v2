@@ -7,6 +7,7 @@ SRCS     = src/main.c\
            src/error.c\
            src/tokenize.c\
            src/destructor.c\
+           src/expand.c\
 
 OBJS     = $(SRCS:%.c=%.o)
 

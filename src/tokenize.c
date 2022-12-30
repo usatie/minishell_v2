@@ -111,7 +111,23 @@ t_token	*word(char **rest, char *line)
 	char		*word;
 
 	while (*line && !is_metacharacter(*line))
-		line++;
+	{
+		if (*line == SINGLE_QUOTE_CHAR)
+		{
+			// skip quote
+			line++;
+			while (*line != SINGLE_QUOTE_CHAR)
+			{
+				if (*line == '\0')
+					todo("Unclosed single quote");
+				line++;
+			}
+			// skip quote
+			line++;
+		}
+		else
+			line++;
+	}
 	word = strndup(start, line - start);
 	if (word == NULL)
 		fatal_error("strndup");

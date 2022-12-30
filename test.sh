@@ -5,12 +5,20 @@ cat <<EOF | gcc -xc -o a.out -
 int main() { printf("hello from a.out\n"); }
 EOF
 
+cat <<EOF | gcc -xc -o print_args -
+#include <stdio.h>
+int main(int argc, char *argv[]) {
+	for (int i = 0; argv[i]; i++)
+		printf("argv[%d] = %s\n", i, argv[i]);
+}
+EOF
+
 cleanup() {
-	rm -f cmp out a.out
+	rm -f cmp out a.out print_args
 }
 
 assert() {
-	printf '%-30s:' "\"$1\""
+	printf '%-50s:' "\"$1\""
 	# exit status
 	echo -n -e "$1" | bash >cmp 2>&-
 	expected=$?
@@ -46,9 +54,18 @@ assert 'a.out'
 assert 'nosuchfile'
 
 # Tokenize
+## unquoted word
 assert 'ls /'
 assert 'echo hello    world     '
 assert 'nosuchfile\n\n'
+
+## single quote
+assert "./print_args 'hello   world' '42Tokyo'"
+assert "echo 'hello   world' '42Tokyo'"
+assert "echo '\"hello   world\"' '42Tokyo'"
+
+## combination
+assert "echo hello'      world'"
 
 cleanup
 echo 'all OK'
