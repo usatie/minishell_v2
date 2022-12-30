@@ -1,7 +1,12 @@
 #!/bin/bash
 
+cat <<EOF | gcc -xc -o a.out -
+#include <stdio.h>
+int main() { printf("hello from a.out\n"); }
+EOF
+
 cleanup() {
-	rm -f cmp out
+	rm -f cmp out a.out
 }
 
 assert() {
@@ -28,6 +33,17 @@ assert ''
 # Absolute path commands without args 
 assert '/bin/pwd'
 assert '/bin/echo'
+assert '/bin/ls'
+
+# Search command path without args
+assert 'pwd'
+assert 'echo'
+assert 'ls'
+assert './a.out'
+
+## no such command
+assert 'a.out'
+assert 'nosuchfile'
 
 cleanup
 echo 'all OK'
