@@ -82,6 +82,7 @@ void	interpret(char *line, int *stat_loc)
 {
 	t_token	*tok;
 	char	**argv;
+	t_node	*node;
 
 	tok = tokenize(line);
 	if (tok->kind == TK_EOF)
@@ -90,10 +91,17 @@ void	interpret(char *line, int *stat_loc)
 		*stat_loc = ERROR_TOKENIZE;
 	else
 	{
-		expand(tok);
-		argv = token_list_to_argv(tok);
-		*stat_loc = exec(argv);
-		free_argv(argv);
+		node = parse(tok);
+		if (syntax_error)
+			*stat_loc = ERROR_PARSE;
+		else
+		{
+			expand(node);
+			argv = token_list_to_argv(node->args);
+			*stat_loc = exec(argv);
+			free_argv(argv);
+		}
+		free_node(node);
 	}
 	free_tok(tok);
 }

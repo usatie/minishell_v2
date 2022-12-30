@@ -31,6 +31,20 @@ struct s_token {
 };
 
 
+enum e_node_kind {
+	ND_SIMPLE_CMD,
+};
+typedef enum e_node_kind	t_node_kind;
+
+typedef struct s_node	t_node;
+struct s_node {
+	t_token		*args;
+	t_node_kind	kind;
+	t_node		*next;
+};
+
+#define ERROR_PARSE 258
+
 // token.c
 # define SINGLE_QUOTE_CHAR '\''
 # define DOUBLE_QUOTE_CHAR '"'
@@ -48,9 +62,18 @@ t_token	*operator(char **rest, char *line);
 t_token	*word(char **rest, char *line);
 
 // expand.c
-void	expand(t_token *tok);
+void	expand(t_node *node);
 
 // destructor.c
+void	free_node(t_node *node);
 void	free_tok(t_token *tok);
 void	free_argv(char **argv);
+
+// parse.c
+t_node	*parse(t_token *tok);
+bool	at_eof(t_token *tok);
+t_node	*new_node(t_node_kind kind);
+void	append_tok(t_token **tokens, t_token *tok);
+t_token	*tokdup(t_token *tok);
+
 #endif
