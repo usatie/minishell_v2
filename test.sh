@@ -1,4 +1,9 @@
 #!/bin/bash
+RED="\033[31m"
+GREEN="\033[32m"
+RESET="\033[0m"
+OK=$GREEN"OK"$RESET
+NG=$RED"NG"$RESET
 
 cat <<EOF | gcc -xc -o a.out -
 #include <stdio.h>
@@ -25,12 +30,12 @@ assert() {
 	echo -n -e "$1" | ./minishell >out 2>&-
 	actual=$?
 
-	diff cmp out >/dev/null && echo -n '  diff OK' || echo -n '  diff NG'
+	diff cmp out >/dev/null && echo -e -n "  diff $OK" || echo -e -n "  diff $NG"
 
 	if [ "$actual" = "$expected" ]; then
-		echo -n '  status OK'
+		echo -e -n "  status $OK"
 	else
-		echo -n "  status NG, expected $expected but got $actual"
+		echo -e -n "  status $NG, expected $expected but got $actual"
 	fi
 	echo
 }
@@ -74,4 +79,3 @@ assert "echo hello'      world'"
 assert "echo hello'  world  '\"  42Tokyo  \""
 
 cleanup
-echo 'all OK'
