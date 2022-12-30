@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "minishell.h"
 
+bool	syntax_error = false;
+
 void	fatal_error(const char *msg)
 {
 	dprintf(STDERR_FILENO, "Fatal Error: %s\n", msg);
@@ -26,3 +28,13 @@ void	todo(const char *msg)
 	dprintf(STDERR_FILENO, "TODO: %s\n", msg);
 	exit(255);
 }
+
+void	tokenize_error(const char *location, char **rest, char *line)
+{
+	syntax_error = true;
+	dprintf(STDERR_FILENO, "minishell: syntax error near %s\n", location);
+	while (*line)
+		line++;
+	*rest = line;
+}
+

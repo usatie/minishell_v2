@@ -116,27 +116,31 @@ t_token	*word(char **rest, char *line)
 		{
 			// skip quote
 			line++;
-			while (*line != SINGLE_QUOTE_CHAR)
-			{
-				if (*line == '\0')
-					todo("Unclosed single quote");
+			while (*line && *line != SINGLE_QUOTE_CHAR)
 				line++;
+			if (*line == '\0')
+			{
+				tokenize_error("Unclosed single quote", &line, line);
+				break ;
 			}
 			// skip quote
-			line++;
+			else
+				line++;
 		}
 		else if (*line == DOUBLE_QUOTE_CHAR)
 		{
 			// skip quote
 			line++;
-			while (*line != DOUBLE_QUOTE_CHAR)
-			{
-				if (*line == '\0')
-					todo("Unclosed double quote");
+			while (*line && *line != DOUBLE_QUOTE_CHAR)
 				line++;
+			if (*line == '\0')
+			{
+				tokenize_error("Unclosed double quote", &line, line);
+				break ;
 			}
 			// skip quote
-			line++;
+			else
+				line++;
 		}
 		else
 			line++;
@@ -153,6 +157,7 @@ t_token	*tokenize(char *line)
 	t_token	head;
 	t_token	*tok;
 
+	syntax_error = false;
 	head.next = NULL;
 	tok = &head;
 	while (*line)
@@ -164,7 +169,7 @@ t_token	*tokenize(char *line)
 		else if (is_word(line))
 			tok = tok->next = word(&line, line);
 		else
-			assert_error("Unexpected Token");
+			tokenize_error("Unexpected Token", &line, line);
 	}
 	tok->next = new_token(NULL, TK_EOF);
 	return (head.next);
