@@ -1,9 +1,14 @@
-NAME   = minishell
-CC     = cc
-CFLAGS = -Wall -Wextra -Werror
-LIBS   = -lreadline
-SRCS   = src/main.c
-OBJS   = $(SRCS:%.c=%.o)
+NAME     = minishell
+CC       = cc
+INCLUDES = -I include
+CFLAGS   = -Wall -Wextra -Werror $(INCLUDES)
+LIBS     = -lreadline
+SRCS     = src/main.c\
+           src/error.c\
+           src/tokenize.c\
+           src/destructor.c\
+
+OBJS     = $(SRCS:%.c=%.o)
 
 all: $(NAME)
 
