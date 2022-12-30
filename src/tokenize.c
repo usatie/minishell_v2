@@ -125,6 +125,19 @@ t_token	*word(char **rest, char *line)
 			// skip quote
 			line++;
 		}
+		else if (*line == DOUBLE_QUOTE_CHAR)
+		{
+			// skip quote
+			line++;
+			while (*line != DOUBLE_QUOTE_CHAR)
+			{
+				if (*line == '\0')
+					todo("Unclosed double quote");
+				line++;
+			}
+			// skip quote
+			line++;
+		}
 		else
 			line++;
 	}

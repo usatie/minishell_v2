@@ -30,6 +30,7 @@ struct s_token {
 
 // token.c
 # define SINGLE_QUOTE_CHAR '\''
+# define DOUBLE_QUOTE_CHAR '"'
 
 t_token	*tokenize(char *line);
 char	**token_list_to_argv(t_token *tok);
