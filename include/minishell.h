@@ -6,6 +6,7 @@
 
 # define ERROR_TOKENIZE 258
 # define ERROR_PARSE 258
+# define ERROR_OPEN_REDIR 1
 # define SINGLE_QUOTE_CHAR '\''
 # define DOUBLE_QUOTE_CHAR '"'
 
@@ -45,6 +46,7 @@ struct s_token {
 enum e_node_kind {
 	ND_SIMPLE_CMD,
 	ND_REDIR_OUT,
+	ND_REDIR_IN,
 };
 typedef enum e_node_kind	t_node_kind;
 
@@ -101,7 +103,7 @@ void	append_tok(t_token **tokens, t_token *tok);
 t_token	*tokdup(t_token *tok);
 
 // redirect.c
-void	open_redir_file(t_node *redirects);
+int		open_redir_file(t_node *redirects);
 void	do_redirect(t_node *redirects);
 void	reset_redirect(t_node *redirects);
 
