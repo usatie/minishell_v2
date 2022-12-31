@@ -4,14 +4,25 @@
 # include <stddef.h>
 # include <stdbool.h>
 
-// error.c
 # define ERROR_TOKENIZE 258
-extern bool	syntax_error;
+# define ERROR_PARSE 258
+# define SINGLE_QUOTE_CHAR '\''
+# define DOUBLE_QUOTE_CHAR '"'
+
+typedef struct s_token		t_token;
+typedef enum e_token_kind	t_token_kind;
+typedef enum e_node_kind	t_node_kind;
+typedef struct s_node		t_node;
+
+// error.c
+extern bool					syntax_error;
 void	todo(const char *msg) __attribute__((noreturn));
 void	fatal_error(const char *msg) __attribute__((noreturn));
 void	assert_error(const char *msg) __attribute__((noreturn));
 void	err_exit(const char *location, const char *msg, int status) __attribute__((noreturn));
 void	tokenize_error(const char *location, char **rest, char *line);
+void	parse_error(const char *location, t_token **rest, t_token *tok);
+void	xperror(const char *location);
 
 // tokenize.c
 typedef struct s_token		t_token;
@@ -58,12 +69,7 @@ struct s_node {
 // filefd           : open("out")
 // stashed_targetfd : dup(targetfd)
 
-#define ERROR_PARSE 258
-
 // token.c
-# define SINGLE_QUOTE_CHAR '\''
-# define DOUBLE_QUOTE_CHAR '"'
-
 t_token	*tokenize(char *line);
 char	**token_list_to_argv(t_token *tok);
 t_token	*new_token(char *word, t_token_kind kind);

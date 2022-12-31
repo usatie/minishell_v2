@@ -45,7 +45,7 @@ void	append_command_element(t_node *command, t_token **rest, t_token *tok)
 	else if (equal_op(tok, ">") && tok->next->kind == TK_WORD)
 		append_node(&command->redirects, redirect_out(&tok, tok));
 	else
-		todo("append_command_element");
+		parse_error("append_command_element", &tok, tok);
 	*rest = tok;
 }
 
