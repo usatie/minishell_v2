@@ -47,6 +47,7 @@ enum e_node_kind {
 	ND_SIMPLE_CMD,
 	ND_REDIR_OUT,
 	ND_REDIR_IN,
+	ND_REDIR_APPEND,
 };
 typedef enum e_node_kind	t_node_kind;
 
