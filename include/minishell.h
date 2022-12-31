@@ -15,8 +15,10 @@ typedef enum e_token_kind	t_token_kind;
 typedef enum e_node_kind	t_node_kind;
 typedef struct s_node		t_node;
 
-// error.c
+extern int					last_status;
 extern bool					syntax_error;
+
+// error.c
 void	todo(const char *msg) __attribute__((noreturn));
 void	fatal_error(const char *msg) __attribute__((noreturn));
 void	assert_error(const char *msg) __attribute__((noreturn));
@@ -117,5 +119,8 @@ void	reset_redirect(t_node *redirects);
 void	prepare_pipe(t_node *node);
 void	prepare_pipe_child(t_node *node);
 void	prepare_pipe_parent(t_node *node);
+
+// exec.c
+int		exec(t_node *node);
 
 #endif
