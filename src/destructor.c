@@ -1,11 +1,15 @@
 #include <stdlib.h>
 #include "minishell.h"
 
+#include <stdio.h>
+
 void	free_node(t_node *node)
 {
 	if (node == NULL)
 		return ;
 	free_tok(node->args);
+	free_tok(node->filename);
+	free_node(node->redirects);
 	free_node(node->next);
 	free(node);
 }

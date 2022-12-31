@@ -23,12 +23,22 @@ cleanup() {
 }
 
 assert() {
-	printf '%-50s:' "[$1]"
+	COMMAND="$1"
+	shift
+	printf '%-50s:' "[$COMMAND]"
 	# exit status
-	echo -n -e "$1" | bash >cmp 2>&-
+	echo -n -e "$COMMAND" | bash >cmp 2>&-
 	expected=$?
-	echo -n -e "$1" | ./minishell >out 2>&-
+	for arg in "$@"
+	do
+		mv "$arg" "$arg"".cmp"
+	done
+	echo -n -e "$COMMAND" | ./minishell >out 2>&-
 	actual=$?
+	for arg in "$@"
+	do
+		mv "$arg" "$arg"".out"
+	done
 
 	diff cmp out >/dev/null && echo -e -n "  diff $OK" || echo -e -n "  diff $NG"
 
@@ -37,6 +47,12 @@ assert() {
 	else
 		echo -e -n "  status $NG, expected $expected but got $actual"
 	fi
+	for arg in "$@"
+	do
+		echo -n "  [$arg] "
+		diff "$arg"".cmp" "$arg"".out" >/dev/null && echo -e -n "$OK" || echo -e -n "$NG"
+		rm -f "$arg"".cmp" "$arg"".out"
+	done
 	echo
 }
 
@@ -77,5 +93,10 @@ assert "echo \"'hello   world'\" \"42Tokyo\""
 ## combination
 assert "echo hello'      world'"
 assert "echo hello'  world  '\"  42Tokyo  \""
+
+# Redirect
+## Redirecting output
+assert 'echo hello >hello.txt' 'hello.txt'
+assert 'echo hello >f1>f2>f3' 'f1' 'f2' 'f3'
 
 cleanup

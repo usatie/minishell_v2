@@ -13,6 +13,7 @@ SRCS     = src/main.c\
            src/destructor.c\
            src/expand.c\
 		   src/parse.c\
+		   src/redirect.c\
 
 OBJS     = $(SRCS:%.c=%.o)
 

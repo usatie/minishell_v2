@@ -91,6 +91,8 @@ void	expand_quote_removal(t_node *node)
 	if (node == NULL)
 		return ;
 	remove_quote(node->args);
+	remove_quote(node->filename);
+	expand_quote_removal(node->redirects);
 	expand_quote_removal(node->next);
 }
 

@@ -44,15 +44,32 @@ struct s_token {
 
 enum e_node_kind {
 	ND_SIMPLE_CMD,
+	ND_REDIR_OUT,
 };
 typedef enum e_node_kind	t_node_kind;
 
 typedef struct s_node	t_node;
 struct s_node {
-	t_token		*args;
 	t_node_kind	kind;
 	t_node		*next;
+	// CMD
+	t_token		*args;
+	t_node		*redirects;
+	// REDIR
+	int			targetfd;
+	t_token		*filename;
+	int			filefd;
+	int			stashed_targetfd;
 };
+
+// Redirecting output example
+// command          : "echo hello 1 > out"
+// targetfd         : 1
+// filename         : "out"
+// filefd           : open("out")
+// stashed_targetfd : dup(targetfd)
+
+#define ERROR_PARSE 258
 
 // token.c
 t_token	*tokenize(char *line);
@@ -77,9 +94,16 @@ void	free_argv(char **argv);
 
 // parse.c
 t_node	*parse(t_token *tok);
+void	append_command_element(t_node *command, t_token **rest, t_token *tok);
 bool	at_eof(t_token *tok);
 t_node	*new_node(t_node_kind kind);
 void	append_tok(t_token **tokens, t_token *tok);
 t_token	*tokdup(t_token *tok);
+
+// redirect.c
+void	open_redir_file(t_node *redirects);
+void	do_redirect(t_node *redirects);
+void	reset_redirect(t_node *redirects);
+
 
 #endif
