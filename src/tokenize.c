@@ -39,43 +39,6 @@ bool	startswith(const char *s, const char *keyword)
 }
 
 /*
-metacharacter
-	  A character that, when unquoted, separates words.  One of the following:
-	  |  & ; ( ) < > space tab
-control operator
-	  A token that performs a control function.  It is one of the following symbols:
-	  || & && ; ;; ( ) | <newline>
-*/
-bool	is_control_operator(const char *s)
-{
-	static char	*const operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
-	size_t				i = 0;				
-
-	while (i < sizeof(operators) / sizeof(*operators))
-	{
-		if (startswith(s, operators[i]))
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
-bool	is_redirection_operator(const char *s)
-{
-	static char	*const operators[] = {">", "<", ">>", "<<"};
-	size_t				i = 0;				
-
-	while (i < sizeof(operators) / sizeof(*operators))
-	{
-		if (startswith(s, operators[i]))
-			return (true);
-		i++;
-	}
-	return (false);
-
-}
-
-/*
 DEFINITIONS
        The following definitions are used throughout the rest of this document.
        blank  A space or tab.

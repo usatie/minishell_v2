@@ -44,6 +44,7 @@ struct s_token {
 
 
 enum e_node_kind {
+	ND_PIPELINE,
 	ND_SIMPLE_CMD,
 	ND_REDIR_OUT,
 	ND_REDIR_IN,
@@ -65,6 +66,10 @@ struct s_node {
 	t_token		*delimiter;
 	int			filefd;
 	int			stashed_targetfd;
+	// PIPELINE
+	int			inpipe[2];
+	int			outpipe[2];
+	t_node		*command;
 };
 
 // Redirecting output example
@@ -104,9 +109,13 @@ void	append_tok(t_token **tokens, t_token *tok);
 t_token	*tokdup(t_token *tok);
 
 // redirect.c
-int		open_redir_file(t_node *redirects);
+int		open_redir_file(t_node *node);
 void	do_redirect(t_node *redirects);
 void	reset_redirect(t_node *redirects);
 
+// pipe.c
+void	prepare_pipe(t_node *node);
+void	prepare_pipe_child(t_node *node);
+void	prepare_pipe_parent(t_node *node);
 
 #endif
