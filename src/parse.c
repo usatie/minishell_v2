@@ -57,6 +57,17 @@ t_node	*redirect_append(t_token **rest, t_token *tok)
 	return (node);
 }
 
+t_node	*redirect_heredoc(t_token **rest, t_token *tok)
+{
+	t_node	*node;
+
+	node = new_node(ND_REDIR_HEREDOC);
+	node->delimiter = tokdup(tok->next);
+	node->targetfd = STDIN_FILENO;
+	*rest = tok->next->next;
+	return (node);
+}
+
 void	append_command_element(t_node *command, t_token **rest, t_token *tok)
 {
 	if (tok->kind == TK_WORD)
@@ -70,6 +81,8 @@ void	append_command_element(t_node *command, t_token **rest, t_token *tok)
 		append_node(&command->redirects, redirect_in(&tok, tok));
 	else if (equal_op(tok, ">>") && tok->next->kind == TK_WORD)
 		append_node(&command->redirects, redirect_append(&tok, tok));
+	else if (equal_op(tok, "<<") && tok->next->kind == TK_WORD)
+		append_node(&command->redirects, redirect_heredoc(&tok, tok));
 	else
 		todo("append_command_element");
 	*rest = tok;

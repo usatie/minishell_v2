@@ -9,6 +9,7 @@ void	free_node(t_node *node)
 		return ;
 	free_tok(node->args);
 	free_tok(node->filename);
+	free_tok(node->delimiter);
 	free_node(node->redirects);
 	free_node(node->next);
 	free(node);
