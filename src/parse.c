@@ -11,10 +11,12 @@ t_node	*parse(t_token *tok)
 	while (tok && !at_eof(tok))
 	{
 		if (tok->kind == TK_WORD)
+		{
 			append_tok(&node->args, tokdup(tok));
+			tok = tok->next;
+		}
 		else
-			todo("Implement parser");
-		tok = tok->next;
+			parse_error("Unexpected Token", &tok, tok);
 	}
 	return (node);
 }
