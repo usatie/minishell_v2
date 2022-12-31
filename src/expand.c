@@ -94,6 +94,7 @@ void	expand_quote_removal(t_node *node)
 	remove_quote(node->filename);
 	remove_quote(node->delimiter);
 	expand_quote_removal(node->redirects);
+	expand_quote_removal(node->command);
 	expand_quote_removal(node->next);
 }
 

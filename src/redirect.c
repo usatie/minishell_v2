@@ -43,27 +43,37 @@ int	read_heredoc(const char *delimiter)
 	return (pfd[0]);
 }
 
-int	open_redir_file(t_node *redir)
+int	open_redir_file(t_node *node)
 {
-	if (redir == NULL)
+	if (node == NULL)
 		return (0);
-	if (redir->kind == ND_REDIR_OUT)
-		redir->filefd = open(redir->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	else if (redir->kind == ND_REDIR_IN)
-		redir->filefd = open(redir->filename->word, O_RDONLY);
-	else if (redir->kind == ND_REDIR_APPEND)
-		redir->filefd = open(redir->filename->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	else if (redir->kind == ND_REDIR_HEREDOC)
-		redir->filefd = read_heredoc(redir->delimiter->word);
+	if (node->kind == ND_PIPELINE)
+	{
+		if (open_redir_file(node->command) < 0)
+			return (-1);
+		if (open_redir_file(node->next) < 0)
+			return (-1);
+		return (0);
+	}
+	else if (node->kind == ND_SIMPLE_CMD)
+		return (open_redir_file(node->redirects));
+	else if (node->kind == ND_REDIR_OUT)
+		node->filefd = open(node->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	else if (node->kind == ND_REDIR_IN)
+		node->filefd = open(node->filename->word, O_RDONLY);
+	else if (node->kind == ND_REDIR_APPEND)
+		node->filefd = open(node->filename->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	else if (node->kind == ND_REDIR_HEREDOC)
+		node->filefd = read_heredoc(node->delimiter->word);
 	else
 		assert_error("open_redir_file");
-	if (redir->filefd < 0)
+	if (node->filefd < 0)
 	{
-		xperror(redir->filename->word);
+		xperror(node->filename->word);
 		return (-1);
 	}
-	redir->filefd = stashfd(redir->filefd);
-	return (open_redir_file(redir->next));
+	node->filefd = stashfd(node->filefd);
+	return (open_redir_file(node->next));
 }
 
 bool	is_redirect(t_node *node)

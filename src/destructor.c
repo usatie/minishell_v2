@@ -12,6 +12,7 @@ void	free_node(t_node *node)
 	free_tok(node->delimiter);
 	free_node(node->redirects);
 	free_node(node->next);
+	free_node(node->command);
 	free(node);
 }
 
