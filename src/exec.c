@@ -19,8 +19,13 @@ int	exec(t_node *node)
 
 	if (open_redir_file(node) < 0)
 		return (ERROR_OPEN_REDIR);
-	last_pid = exec_pipeline(node);
-	status = wait_pipeline(last_pid);
+	if (node->next == NULL && is_builtin(node))
+		status = exec_builtin(node);
+	else
+	{
+		last_pid = exec_pipeline(node);
+		status = wait_pipeline(last_pid);
+	}
 	return (status);
 }
 
@@ -93,6 +98,7 @@ pid_t	exec_pipeline(t_node *node)
 			path = search_path(path);
 		validate_access(path, argv[0]);
 		execve(path, argv, environ);
+		free_argv(argv);
 		reset_redirect(node->command->redirects);
 		fatal_error("execve");
 	}

@@ -133,4 +133,12 @@ int		exec(t_node *node);
 void	setup_signal(void);
 void	reset_signal(void);
 
+// builtin.c
+bool	is_builtin(t_node *node);
+int		exec_builtin(t_node *node);
+
+// builtin_exit.c
+bool	is_numeric(char *s);
+int		builtin_exit(char **argv);
+
 #endif
