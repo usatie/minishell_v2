@@ -122,4 +122,9 @@ assert 'cat <<E"O"F\nhello\nworld\nEOF\nNOPRINT'
 assert 'cat Makefile | grep minishell'
 assert 'cat | cat | ls\n\n'
 
+# Expand Variable
+assert 'echo $USER'
+assert 'echo $USER$PATH$TERM'
+assert 'echo "$USER  $PATH   $TERM"'
+
 cleanup
