@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include "minishell.h"
 
 int	last_status;
@@ -34,6 +35,7 @@ int	main(void)
 {
 	char	*line;
 
+	setup_signal();
 	last_status = 0;
 	while (1)
 	{
