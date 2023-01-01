@@ -220,4 +220,13 @@ assert './infinite_loop'
 # 2. Ctrl-C
 # 3. Ctrl-D
 
+# Builtin
+## exit
+assert 'exit'
+assert 'exit 42'
+assert 'exit ""'
+assert 'exit hello'
+assert 'exit 42Tokyo'
+assert 'exit 1 2'
+
 cleanup
