@@ -36,6 +36,7 @@ int	main(void)
 	char	*line;
 
 	rl_outstream = stderr;
+	setup_signal();
 	last_status = 0;
 	while (1)
 	{

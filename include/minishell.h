@@ -3,6 +3,7 @@
 
 # include <stddef.h>
 # include <stdbool.h>
+# include <signal.h>
 
 # define ERROR_TOKENIZE 258
 # define ERROR_PARSE 258
@@ -15,8 +16,10 @@ typedef enum e_token_kind	t_token_kind;
 typedef enum e_node_kind	t_node_kind;
 typedef struct s_node		t_node;
 
-extern int					last_status;
-extern bool					syntax_error;
+extern int						last_status;
+extern bool						syntax_error;
+extern bool						readline_interrupted;
+extern volatile sig_atomic_t	sig;
 
 // error.c
 void	todo(const char *msg) __attribute__((noreturn));
@@ -126,5 +129,10 @@ void	prepare_pipe_parent(t_node *node);
 
 // exec.c
 int		exec(t_node *node);
+
+// signal.h
+
+void	setup_signal(void);
+void	reset_signal(void);
 
 #endif
