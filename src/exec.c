@@ -73,11 +73,27 @@ void	validate_access(const char *path, const char *filename)
 		err_exit(filename, "command not found", 127);
 }
 
-pid_t	exec_pipeline(t_node *node)
+int	exec_nonbuiltin(t_node *node) __attribute__((noreturn));
+int	exec_nonbuiltin(t_node *node)
 {
 	char		*path;
-	pid_t		pid;
 	char		**argv;
+
+	do_redirect(node->command->redirects);
+	argv = token_list_to_argv(node->command->args);
+	path = argv[0];
+	if (strchr(path, '/') == NULL)
+		path = search_path(path);
+	validate_access(path, argv[0]);
+	execve(path, argv, get_environ(envmap));
+	free_argv(argv);
+	reset_redirect(node->command->redirects);
+	fatal_error("execve");
+}
+
+pid_t	exec_pipeline(t_node *node)
+{
+	pid_t		pid;
 
 	if (node == NULL)
 		return (-1);
@@ -90,16 +106,10 @@ pid_t	exec_pipeline(t_node *node)
 		// child process
 		reset_signal();
 		prepare_pipe_child(node);
-		do_redirect(node->command->redirects);
-		argv = token_list_to_argv(node->command->args);
-		path = argv[0];
-		if (strchr(path, '/') == NULL)
-			path = search_path(path);
-		validate_access(path, argv[0]);
-		execve(path, argv, get_environ(envmap));
-		free_argv(argv);
-		reset_redirect(node->command->redirects);
-		fatal_error("execve");
+		if (is_builtin(node))
+			exit(exec_builtin(node));
+		else
+			exec_nonbuiltin(node);
 	}
 	// parent process
 	prepare_pipe_parent(node);

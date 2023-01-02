@@ -20,6 +20,7 @@ SRCS     = src/main.c\
 		   src/signal.c\
 		   src/builtin.c\
 		   src/builtin_exit.c\
+		   src/builtin_export.c\
 		   src/map.c\
 		   src/env.c\
 
