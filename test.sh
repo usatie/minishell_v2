@@ -261,4 +261,27 @@ print_desc "Output of 'env' differs, but it's ok."
 assert 'env' # order of variables, default variables differs...
 assert 'env | grep hoge | sort'
 
+## cd
+assert 'cd'
+assert 'cd .'
+assert 'cd ..'
+assert 'cd ///'
+assert 'cd /tmp'
+assert 'cd /tmp/'
+assert 'cd /tmp///'
+assert 'cd /../../../././.././'
+assert 'cd src'
+
+assert 'cd \n echo $PWD'
+unset HOME
+assert 'cd \n echo $PWD'
+assert 'cd .\n echo $PWD'
+assert 'cd ..\n echo $PWD'
+assert 'cd ///\n echo $PWD'
+assert 'cd /tmp\n echo $PWD'
+assert 'cd /tmp/\n echo $PWD'
+assert 'cd /tmp///\n echo $PWD'
+assert 'cd /../../../././.././\n echo $PWD'
+assert 'cd src\n echo $PWD'
+
 cleanup
