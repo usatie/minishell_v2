@@ -18,6 +18,7 @@ SRCS     = src/main.c\
 		   src/builtin_exit.c\
 		   src/builtin_export.c\
 		   src/builtin_unset.c\
+		   src/builtin_env.c\
 		   src/map.c\
 		   src/env.c\
 
