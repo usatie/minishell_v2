@@ -158,6 +158,9 @@ int		builtin_exit(char **argv);
 // builtin_export.c
 int		builtin_export(char **argv);
 
+// builtin_unset.c
+int		builtin_unset(char **argv);
+
 // map.c
 t_item	*item_new(char *name, char *value);
 char	*item_get_string(t_item *item);
