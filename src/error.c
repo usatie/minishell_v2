@@ -65,3 +65,12 @@ void	xperror(const char *location)
 	perror_prefix();
 	perror(location);
 }
+
+void	builtin_error(const char *func, const char *name, const char *err)
+{
+	perror_prefix();
+	dprintf(STDERR_FILENO, "%s: ", func);
+	if (name)
+		dprintf(STDERR_FILENO, "`%s': ", name);
+	dprintf(STDERR_FILENO, "%s\n", err);
+}
