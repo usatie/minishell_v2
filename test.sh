@@ -242,4 +242,16 @@ assert 'export nosuch [invalid] hoge=nosuch\n export | grep nosuch | sort'
 assert 'export nosuch hoge=nosuch [invalid]\n export | grep nosuch | sort'
 assert 'export nosuch="nosuch2=hoge"\nexport $nosuch\n export | grep nosuch | sort'
 
+## unset
+export hoge fuga=fuga
+assert 'unset'
+assert 'unset hoge'
+assert 'unset fuga'
+assert 'unset nosuch'
+assert 'unset [invalid]'
+assert 'unset hoge fuga'
+assert 'unset hoge nosuch fuga'
+assert 'unset fuga \n export | echo $fuga'
+assert 'unset [invalid] fuga \n echo $fuga'
+
 cleanup
