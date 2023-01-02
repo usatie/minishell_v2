@@ -230,6 +230,8 @@ assert 'exit 42Tokyo'
 assert 'exit 1 2'
 
 ## export
+print_desc "Output of 'export' differs, but it's ok."
+assert 'export' # order of variables, default variables differs...
 assert 'export | grep nosuch | sort'
 assert 'export nosuch\n export | grep nosuch | sort'
 assert 'export nosuch=fuga\n export | grep nosuch | sort'
@@ -253,5 +255,10 @@ assert 'unset hoge fuga'
 assert 'unset hoge nosuch fuga'
 assert 'unset fuga \n export | echo $fuga'
 assert 'unset [invalid] fuga \n echo $fuga'
+
+## env
+print_desc "Output of 'env' differs, but it's ok."
+assert 'env' # order of variables, default variables differs...
+assert 'env | grep hoge | sort'
 
 cleanup
