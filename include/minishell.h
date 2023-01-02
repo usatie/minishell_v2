@@ -15,11 +15,14 @@ typedef struct s_token		t_token;
 typedef enum e_token_kind	t_token_kind;
 typedef enum e_node_kind	t_node_kind;
 typedef struct s_node		t_node;
+typedef struct s_map		t_map;
+typedef struct s_item		t_item;
 
 extern int						last_status;
 extern bool						syntax_error;
 extern bool						readline_interrupted;
 extern volatile sig_atomic_t	sig;
+extern t_map	*envmap;
 
 // error.c
 void	todo(const char *msg) __attribute__((noreturn));
@@ -85,6 +88,16 @@ struct s_node {
 // filefd           : open("out")
 // stashed_targetfd : dup(targetfd)
 
+struct s_item {
+	char	*name;
+	char	*value;
+	t_item	*next;
+};
+
+struct s_map {
+	t_item	item_head;
+};
+
 // token.c
 t_token	*tokenize(char *line);
 char	**token_list_to_argv(t_token *tok);
@@ -140,5 +153,21 @@ int		exec_builtin(t_node *node);
 // builtin_exit.c
 bool	is_numeric(char *s);
 int		builtin_exit(char **argv);
+
+// map.c
+t_item	*item_new(char *name, char *value);
+char	*item_get_string(t_item *item);
+t_map	*map_new(void);
+char	*map_get(t_map *map, const char *name);
+int		map_put(t_map *map, const char *string, bool allow_empty_value);
+int		map_set(t_map *map, const char *name, const char *value);
+int		map_unset(t_map *map, const char *name);
+size_t	map_len(t_map *map, bool count_null_value);
+void	map_printall(t_map *map);
+
+// env.c
+char	*xgetenv(const char *name);
+void	initenv(void);
+char	**get_environ(t_map *map);
 
 #endif

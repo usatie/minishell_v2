@@ -35,6 +35,7 @@ int	main(void)
 {
 	char	*line;
 
+	initenv();
 	setup_signal();
 	last_status = 0;
 	while (1)
