@@ -66,6 +66,7 @@ struct s_node {
 	int			targetfd;
 	t_token		*filename;
 	t_token		*delimiter;
+	bool		is_delim_unquoted;
 	int			filefd;
 	int			stashed_targetfd;
 	// PIPELINE
@@ -96,6 +97,7 @@ t_token	*word(char **rest, char *line);
 
 // expand.c
 void	expand(t_node *node);
+char	*expand_heredoc_line(char *line);
 
 // destructor.c
 void	free_node(t_node *node);
