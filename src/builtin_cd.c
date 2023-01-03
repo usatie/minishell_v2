@@ -73,9 +73,7 @@ char	*resolve_pwd(char *oldpwd, char *path)
 	char	newpwd[PATH_MAX];
 	char	*dup;
 
-	if (oldpwd == NULL)
-		return (NULL);
-	if (*path == '/')
+	if (*path == '/' || oldpwd == NULL)
 		strlcpy(newpwd, "/", PATH_MAX);
 	else
 		strlcpy(newpwd, oldpwd, PATH_MAX);

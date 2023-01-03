@@ -316,9 +316,9 @@ assert 'cd /tmp/'
 assert 'cd /tmp///'
 assert 'cd /../../../././.././'
 assert 'cd src'
+assert 'unset HOME\ncd'
 
 assert 'cd \n echo $PWD'
-unset HOME
 assert 'cd \n echo $PWD'
 assert 'cd .\n echo $PWD'
 assert 'cd ..\n echo $PWD'
@@ -328,6 +328,7 @@ assert 'cd /tmp/\n echo $PWD'
 assert 'cd /tmp///\n echo $PWD'
 assert 'cd /../../../././.././\n echo $PWD'
 assert 'cd src\n echo $PWD'
+assert 'unset HOME\ncd \n echo $PWD'
 
 ## echo
 assert 'echo'
@@ -337,5 +338,16 @@ assert 'echo -n'
 assert 'echo -n hello'
 assert 'echo -n hello world'
 assert 'echo hello -n'
+
+## pwd
+assert 'pwd'
+assert 'cd\npwd'
+assert 'cd src\npwd'
+assert 'cd /etc\npwd'
+assert 'cd . \n pwd \n echo $PWD $OLDPWD'
+assert 'cd .. \n pwd \n echo $PWD $OLDPWD'
+assert 'cd /// \n pwd \n echo $PWD $OLDPWD'
+assert 'cd /tmp/// \n pwd \n echo $PWD $OLDPWD'
+assert 'unset PWD\npwd\ncd /etc\npwd'
 
 cleanup
