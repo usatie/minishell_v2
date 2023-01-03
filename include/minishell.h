@@ -172,6 +172,9 @@ int		builtin_cd(char **argv);
 // builtin_echo.c
 int		builtin_echo(char **argv);
 
+// builtin_pwd.c
+int		builtin_pwd(char **argv);
+
 // map.c
 t_item	*item_new(char *name, char *value);
 char	*item_get_string(t_item *item);

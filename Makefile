@@ -25,6 +25,7 @@ SRCS     = src/main.c\
 		   src/builtin_env.c\
 		   src/builtin_cd.c\
 		   src/builtin_echo.c\
+		   src/builtin_pwd.c\
 		   src/map.c\
 		   src/env.c\
 
