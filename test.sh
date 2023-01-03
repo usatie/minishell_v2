@@ -284,4 +284,13 @@ assert 'cd /tmp///\n echo $PWD'
 assert 'cd /../../../././.././\n echo $PWD'
 assert 'cd src\n echo $PWD'
 
+## echo
+assert 'echo'
+assert 'echo hello'
+assert 'echo hello "    " world'
+assert 'echo -n'
+assert 'echo -n hello'
+assert 'echo -n hello world'
+assert 'echo hello -n'
+
 cleanup
