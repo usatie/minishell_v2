@@ -350,4 +350,11 @@ assert 'cd /// \n pwd \n echo $PWD $OLDPWD'
 assert 'cd /tmp/// \n pwd \n echo $PWD $OLDPWD'
 assert 'unset PWD\npwd\ncd /etc\npwd'
 
+## export attribute
+assert 'unset PWD \n cd \n echo $PWD \ncd /tmp\necho $PWD'
+assert 'unset PWD\ncd\necho $OLDPWD\ncd /tmp\necho $OLDPWD'
+assert 'unset PWD\ncd\nexport|grep PWD\ncd /tmp\nexport|grep PWD'
+assert 'unset PWD\ncd\nenv|grep PWD\ncd /tmp\nenv|grep PWD'
+
+
 cleanup

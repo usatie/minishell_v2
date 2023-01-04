@@ -22,7 +22,7 @@ bool	is_identifier(const char *s)
 	return (true);
 }
 
-t_item	*item_new(char *name, char *value)
+t_item	*item_new(char *name, char *value, int attributes)
 {
 	t_item	*item;
 
@@ -31,7 +31,13 @@ t_item	*item_new(char *name, char *value)
 		fatal_error("calloc");
 	item->name = name;
 	item->value = value;
+	item->attributes = attributes;
 	return (item);
+}
+
+bool	item_exported(t_item *item)
+{
+	return (item->attributes & ATTR_EXPORT);
 }
 
 char	*item_get_string(t_item *item)
@@ -64,7 +70,7 @@ t_map	*map_new(void)
 	return (map);
 }
 
-char	*map_get(t_map *map, const char *name)
+t_item	*map_get(t_map *map, const char *name)
 {
 	t_item	*cur;
 
@@ -74,7 +80,7 @@ char	*map_get(t_map *map, const char *name)
 	while (cur)
 	{
 		if (strcmp(cur->name, name) == 0)
-			return (cur->value);
+			return (cur);
 		cur = cur->next;
 	}
 	return (NULL);
@@ -112,13 +118,7 @@ int	map_set(t_map *map, const char *name, const char *value)
 
 	if (name == NULL || !is_identifier(name))
 		return (-1);
-	cur = map->item_head.next;
-	while (cur)
-	{
-		if (strcmp(cur->name, name) == 0)
-			break ;
-		cur = cur->next;
-	}
+	cur = map_get(map, name);
 	// found
 	if (cur)
 	{
@@ -137,13 +137,13 @@ int	map_set(t_map *map, const char *name, const char *value)
 	{
 		if (value == NULL)
 		{
-			cur = item_new(strdup(name), NULL);
+			cur = item_new(strdup(name), NULL, 0);
 			if (cur->name == NULL)
 				fatal_error("strdup");
 		}
 		else
 		{
-			cur = item_new(strdup(name), strdup(value));
+			cur = item_new(strdup(name), strdup(value), 0);
 			if (cur->name == NULL || cur->value == NULL)
 				fatal_error("strdup");
 		}
@@ -153,7 +153,21 @@ int	map_set(t_map *map, const char *name, const char *value)
 	return (0);
 }
 
-int	map_put(t_map *map, const char *string, bool allow_empty_value)
+// name, value 
+int	map_set_attr(t_map *map, const char *name, const char *value, int attr)
+{
+	t_item	*cur;
+
+	if (map_set(map, name, value) < 0)
+		return (-1);
+	cur = map_get(map, name);
+	if (cur == NULL)
+		assert_error("map_set_attr");
+	cur->attributes = attr;
+	return (0);
+}
+
+int	map_put(t_map *map, const char *string, bool allow_empty_value, int attributes)
 {
 	int		result;
 	char	*name_end;
@@ -179,7 +193,7 @@ int	map_put(t_map *map, const char *string, bool allow_empty_value)
 		if (name == NULL || value == NULL)
 			fatal_error("strdup");
 	}
-	result = map_set(map, name, value);
+	result = map_set_attr(map, name, value, attributes);
 	free(name);
 	free(value);
 	return (result);

@@ -11,7 +11,12 @@ static void	envmap_init(t_map *map, char **ep);
 
 char	*xgetenv(const char *name)
 {
-	return (map_get(envmap, name));
+	t_item	*item;
+
+	item = map_get(envmap, name);
+	if (item == NULL)
+		return (NULL);
+	return (item->value);
 }
 
 void	initenv(void)
@@ -35,7 +40,7 @@ char	**get_environ(t_map *map)
 	item = map->item_head.next;
 	while (item)
 	{
-		if (item->value)
+		if (item->value && item_exported(item))
 		{
 			environ[i] = item_get_string(item);
 			i++;
@@ -52,16 +57,16 @@ static void	envmap_init(t_map *map, char **ep)
 
 	while (*ep)
 	{
-		map_put(map, *ep, false);
+		map_put(map, *ep, false, ATTR_EXPORT);
 		ep++;
 	}
 	if (map_get(map, "SHLVL") == NULL)
-		map_set(map, "SHLVL", "1");
+		map_set_attr(map, "SHLVL", "1", ATTR_EXPORT);
 	if (map_get(map, "PWD") == NULL)
 	{
 		getcwd(cwd, PATH_MAX);
-		map_set(map, "PWD", cwd);
+		map_set_attr(map, "PWD", cwd, ATTR_EXPORT);
 	}
-	if (map_get(map, "OLDPWD") == NULL)
-		map_set(map, "OLDPWD", NULL);
+	map_unset(map, "OLDPWD");
+	map_set_attr(map, "OLDPWD", NULL, ATTR_EXPORT);
 }

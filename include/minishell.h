@@ -89,9 +89,11 @@ struct s_node {
 // filefd           : open("out")
 // stashed_targetfd : dup(targetfd)
 
+# define ATTR_EXPORT 0x0000001
 struct s_item {
 	char	*name;
 	char	*value;
+	int		attributes;
 	t_item	*next;
 };
 
@@ -174,12 +176,14 @@ int		builtin_echo(char **argv);
 int		builtin_pwd(char **argv);
 
 // map.c
-t_item	*item_new(char *name, char *value);
+t_item	*item_new(char *name, char *value, int attr);
 char	*item_get_string(t_item *item);
+bool	item_exported(t_item *item);
 t_map	*map_new(void);
-char	*map_get(t_map *map, const char *name);
-int		map_put(t_map *map, const char *string, bool allow_empty_value);
+t_item	*map_get(t_map *map, const char *name);
+int		map_put(t_map *map, const char *string, bool allow_empty_value, int attr);
 int		map_set(t_map *map, const char *name, const char *value);
+int		map_set_attr(t_map *map, const char *name, const char *value, int attr);
 int		map_unset(t_map *map, const char *name);
 size_t	map_len(t_map *map, bool count_null_value);
 void	map_printall(t_map *map);

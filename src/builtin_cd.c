@@ -97,15 +97,18 @@ char	*resolve_pwd(char *oldpwd, char *path)
 int	builtin_cd(char **argv)
 {
 	char	*home;
-	char	*oldpwd;
+	char	*pwd;
 	char	path[PATH_MAX];
 	char	*newpwd;
 
-	oldpwd = map_get(envmap, "PWD");
-	map_set(envmap, "OLDPWD", oldpwd);
+	pwd = xgetenv("PWD");
+	if (pwd == NULL)
+		map_set(envmap, "OLDPWD", "");
+	else
+		map_set(envmap, "OLDPWD", pwd);
 	if (argv[1] == NULL)
 	{
-		home = map_get(envmap, "HOME");
+		home = xgetenv("HOME");
 		if (home == NULL)
 		{
 			builtin_error("cd", NULL, "HOME not set");
@@ -120,7 +123,7 @@ int	builtin_cd(char **argv)
 		builtin_error("cd", NULL, "chdir");
 		return (1);
 	}
-	newpwd = resolve_pwd(oldpwd, path);
+	newpwd = resolve_pwd(pwd, path);
 	map_set(envmap, "PWD", newpwd);
 	free(newpwd);
 	return (0);

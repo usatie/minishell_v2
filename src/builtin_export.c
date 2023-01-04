@@ -9,7 +9,9 @@ void	print_allenv(void)
 	cur = envmap->item_head.next;
 	while (cur)
 	{
-		if (cur->value)
+		if (!item_exported(cur))
+			;
+		else if (cur->value)
 			printf("declare -x %s=\"%s\"\n", cur->name, cur->value);
 		else
 			printf("declare -x %s\n", cur->name);
@@ -31,7 +33,7 @@ int	builtin_export(char **argv)
 	i = 1;
 	while (argv[i])
 	{
-		if (map_put(envmap, argv[i], true) < 0)
+		if (map_put(envmap, argv[i], true, ATTR_EXPORT) < 0)
 		{
 			builtin_error("export", argv[i], "not a valid identifier");
 			status = 1;
