@@ -25,6 +25,7 @@ extern volatile sig_atomic_t	sig;
 extern t_map	*envmap;
 
 // error.c
+void	perror_prefix(void);
 void	todo(const char *msg) __attribute__((noreturn));
 void	fatal_error(const char *msg) __attribute__((noreturn));
 void	assert_error(const char *msg) __attribute__((noreturn));
@@ -34,7 +35,6 @@ void	parse_error(const char *location, t_token **rest, t_token *tok);
 void	xperror(const char *location);
 void	builtin_error(const char *func, const char *name, const char *err);
 
-// tokenize.c
 typedef struct s_token		t_token;
 enum e_token_kind {
 	TK_WORD,
@@ -50,7 +50,6 @@ struct s_token {
 	t_token_kind	kind;
 	t_token			*next;
 };
-
 
 enum e_node_kind {
 	ND_PIPELINE,
@@ -103,10 +102,9 @@ struct s_map {
 	t_item	item_head;
 };
 
-// token.c
+// tokenize.c
 t_token	*tokenize(char *line);
 char	**token_list_to_argv(t_token *tok);
-t_token	*new_token(char *word, t_token_kind kind);
 bool   	is_blank(char c);
 bool   	consume_blank(char **rest, char *line);
 bool   	startswith(const char *s, const char *keyword);
@@ -115,9 +113,31 @@ bool   	is_metacharacter(char c);
 bool   	is_word(const char *s);
 t_token	*operator(char **rest, char *line);
 t_token	*word(char **rest, char *line);
+// tokenize/token.c
+t_token	*new_token(char *word, t_token_kind kind);
+t_token	*tokdup(t_token *tok);
+void	append_tok(t_token **tokens, t_token *tok);
+bool	at_eof(t_token *tok);
+bool	equal_op(t_token *tok, char *op);
+// tokenize/name.c
+bool	is_identifier(const char *s);
+bool	is_alpha_under(char c);
+bool	is_alpha_num_under(char c);
 
-// expand.c
+// expand/expand.c
 void	expand(t_node *node);
+void	append_char(char **s, char c);
+// expand/expand_quote_removal.c
+void	expand_quote_removal(t_node *node);
+// expand/expand_parameter.c
+void	expand_variable(t_node *node);
+// expand/variable.c
+bool	is_variable(char *s);
+void	expand_variable_str(char **dst, char **rest, char *p);
+// expand/special_parameter.c
+bool	is_special_parameter(char *s);
+void	expand_special_parameter_str(char **dst, char **rest, char *p);
+// expand/expand_heredoc.h
 char	*expand_heredoc_line(char *line);
 
 // destructor.c
@@ -128,28 +148,44 @@ void	free_argv(char **argv);
 // parse.c
 t_node	*parse(t_token *tok);
 void	append_command_element(t_node *command, t_token **rest, t_token *tok);
-bool	at_eof(t_token *tok);
 t_node	*new_node(t_node_kind kind);
-void	append_tok(t_token **tokens, t_token *tok);
-t_token	*tokdup(t_token *tok);
+
+t_node	*pipeline(t_token **rest, t_token *tok);
+t_node	*simple_command(t_token **rest, t_token *tok);
+t_node	*redirect_out(t_token **rest, t_token *tok);
+t_node	*redirect_in(t_token **rest, t_token *tok);
+t_node	*redirect_append(t_token **rest, t_token *tok);
+t_node	*redirect_heredoc(t_token **rest, t_token *tok);
+
 
 // redirect.c
-int		open_redir_file(t_node *node);
 void	do_redirect(t_node *redirects);
 void	reset_redirect(t_node *redirects);
+
+// redirect/stashfd.c
+int	stashfd(int fd);
+// redirect/open_redir_file.c
+int		open_redir_file(t_node *node);
+// redirect/heredoc.c
+int	read_heredoc(const char *delimiter, bool is_delim_unquoted);
 
 // pipe.c
 void	prepare_pipe(t_node *node);
 void	prepare_pipe_child(t_node *node);
 void	prepare_pipe_parent(t_node *node);
 
-// exec.c
+// exec/*.c
 int		exec(t_node *node);
+char	*search_path(const char *filename);
 
-// signal.h
-
+// signal/signal.c
 void	setup_signal(void);
 void	reset_signal(void);
+
+// signal/signal_handle.c
+void	reset_sig(int signum);
+void	ignore_sig(int signum);
+void	handle_sig(int signum);
 
 // builtin.c
 bool	is_builtin(t_node *node);
