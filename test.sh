@@ -28,7 +28,7 @@ print_desc() {
 }
 
 cleanup() {
-	rm -f cmp out a.out print_args exit42 infinite_loop
+	rm -f cmp out a.out print_args exit42 infinite_loop no_exec_perm no_read_perm
 }
 
 assert() {
@@ -82,6 +82,51 @@ assert './a.out'
 ## no such command
 assert 'a.out'
 assert 'nosuchfile'
+
+## command not found
+assert '""'
+# assert '.' # . is a builtin command in bash
+assert '..'
+
+## is a directory
+assert './'
+assert '/'
+assert '/etc'
+assert '/etc/'
+assert '////'
+
+## Permission denied
+echo "int main() { }" | gcc -xc -o no_exec_perm -
+chmod -x no_exec_perm
+assert 'no_exec_perm'
+assert './no_exec_perm'
+echo "int main() { }" | gcc -xc -o no_read_perm -
+chmod -r no_read_perm
+assert 'no_read_perm'
+assert './no_read_perm'
+
+mkdir -p /tmp/a /tmp/b
+echo "int main() { return 1; }" | gcc -xc -o /tmp/a/simple_test -
+echo "int main() { return 2; }" | gcc -xc -o /tmp/b/simple_test -
+
+print_desc "/tmp/a /tmp/b both with permission"
+assert 'unset PATH\nexport PATH="/tmp/a:/tmp/b"\nsimple_test'
+assert 'unset PATH\nexport PATH="/tmp/b:/tmp/a"\nsimple_test'
+
+print_desc "/tmp/a /tmp/b both without permission"
+chmod -x /tmp/a/simple_test; chmod -x /tmp/b/simple_test;
+assert 'unset PATH\nexport PATH="/tmp/a:/tmp/b"\nsimple_test'
+assert 'unset PATH\nexport PATH="/tmp/b:/tmp/a"\nsimple_test'
+
+print_desc "a with permission, b without permission"
+chmod +x /tmp/a/simple_test; chmod -x /tmp/b/simple_test;
+assert 'unset PATH\nexport PATH="/tmp/a:/tmp/b"\nsimple_test'
+assert 'unset PATH\nexport PATH="/tmp/b:/tmp/a"\nsimple_test'
+
+print_desc "a without permission, b with permission"
+chmod -x /tmp/a/simple_test; chmod +x /tmp/b/simple_test;
+assert 'unset PATH\nexport PATH="/tmp/a:/tmp/b"\nsimple_test'
+assert 'unset PATH\nexport PATH="/tmp/b:/tmp/a"\nsimple_test'
 
 # Tokenize
 ## unquoted word

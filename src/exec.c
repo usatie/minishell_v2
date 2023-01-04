@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/stat.h>
 #include "minishell.h"
 
 #include <string.h>
@@ -29,7 +30,7 @@ int	exec(t_node *node)
 	return (status);
 }
 
-char	*search_path(const char *filename)
+char	*search_path_mode(const char *filename, int mode)
 {
 	char	path[PATH_MAX];
 	char	*value;
@@ -49,7 +50,7 @@ char	*search_path(const char *filename)
 			strlcpy(path, value, PATH_MAX);
 		strlcat(path, "/", PATH_MAX);
 		strlcat(path, filename, PATH_MAX);
-		if (access(path, X_OK) == 0)
+		if (access(path, mode) == 0)
 		{
 			char	*dup;
 
@@ -65,12 +66,35 @@ char	*search_path(const char *filename)
 	return (NULL);
 }
 
+char	*search_path(const char *filename)
+{
+	char	*path;
+
+	path = search_path_mode(filename, X_OK);
+	if (path)
+		return (path);
+	path = search_path_mode(filename, F_OK);
+	return (path);
+}
+
 void	validate_access(const char *path, const char *filename)
 {
+	struct stat	st;
+
 	if (path == NULL)
+		err_exit(filename, "command not found", 127);
+	if (strcmp(filename, "") == 0)
+		err_exit(filename, "command not found", 127);
+	if (strcmp(filename, "..") == 0)
 		err_exit(filename, "command not found", 127);
 	if (access(path, F_OK) < 0)
 		err_exit(filename, "command not found", 127);
+	if (stat(path, &st) < 0)
+		fatal_error("fstat");
+	if (S_ISDIR(st.st_mode))
+		err_exit(filename, "is a directory", 126);
+	if (access(path, X_OK) < 0)
+		err_exit(path, "Permission denied", 126);
 }
 
 int	exec_nonbuiltin(t_node *node) __attribute__((noreturn));
