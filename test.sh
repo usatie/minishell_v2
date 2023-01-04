@@ -18,8 +18,12 @@ int main(int argc, char *argv[]) {
 }
 EOF
 
+cat <<EOF | gcc -xc -o exit42 -
+int main() { return 42; }
+EOF
+
 cleanup() {
-	rm -f cmp out a.out print_args
+	rm -f cmp out a.out print_args exit42
 }
 
 assert() {
@@ -126,5 +130,11 @@ assert 'cat | cat | ls\n\n'
 assert 'echo $USER'
 assert 'echo $USER$PATH$TERM'
 assert 'echo "$USER  $PATH   $TERM"'
+
+# Special Parameter $?
+assert 'echo $?'
+assert 'invalid\necho $?\necho $?'
+assert 'exit42\necho $?\necho $?'
+assert 'exit42\n\necho $?\necho $?'
 
 cleanup
