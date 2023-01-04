@@ -10,7 +10,13 @@ int	builtin_env(char **argv)
 	cur = envmap->item_head.next;
 	while (cur)
 	{
-		if (cur->value)
+		if (!item_exported(cur))
+			;
+		else if (cur->value == NULL)
+			;
+		else if (cur->value[0] == '\0')
+			;
+		else
 			printf("%s=%s\n", cur->name, cur->value);
 		cur = cur->next;
 	}
