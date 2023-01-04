@@ -1,0 +1,31 @@
+#include <stdlib.h>
+#include "minishell.h"
+
+#include <string.h>
+#include <ctype.h>
+
+void	append_char(char **s, char c)
+{
+	size_t	size;
+	char	*new;
+
+	size = 2;
+	if (*s)
+		size += strlen(*s);
+	new = malloc(size);
+	if (new == NULL)
+		fatal_error("malloc");
+	if (*s)
+		strlcpy(new, *s, size);
+	new[size - 2] = c;
+	new[size - 1] = '\0';
+	if (*s)
+		free(*s);
+	*s = new;
+}
+
+void	expand(t_node *node)
+{
+	expand_variable(node);
+	expand_quote_removal(node);
+}

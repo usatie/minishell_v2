@@ -7,11 +7,10 @@
 
 #include <string.h>
 
-char	*search_path(const char *filename);
 void	validate_access(const char *path, const char *filename);
+int		exec_nonbuiltin(t_node *node) __attribute__((noreturn));
 pid_t	exec_pipeline(t_node *node);
 int		wait_pipeline(pid_t last_pid);
-int		exec(t_node *node);
 
 int	exec(t_node *node)
 {
@@ -28,53 +27,6 @@ int	exec(t_node *node)
 		status = wait_pipeline(last_pid);
 	}
 	return (status);
-}
-
-char	*search_path_mode(const char *filename, int mode)
-{
-	char	path[PATH_MAX];
-	char	*value;
-	char	*end;
-
-	value = xgetenv("PATH");
-	while (*value)
-	{
-		// /bin:/usr/bin
-		//     ^
-		//     end
-		bzero(path, PATH_MAX);
-		end = strchr(value, ':');
-		if (end)
-			strncpy(path, value, end - value);
-		else
-			strlcpy(path, value, PATH_MAX);
-		strlcat(path, "/", PATH_MAX);
-		strlcat(path, filename, PATH_MAX);
-		if (access(path, mode) == 0)
-		{
-			char	*dup;
-
-			dup = strdup(path);
-			if (dup == NULL)
-				fatal_error("strdup");
-			return (dup);
-		}
-		if (end == NULL)
-			return (NULL);
-		value = end + 1;
-	}
-	return (NULL);
-}
-
-char	*search_path(const char *filename)
-{
-	char	*path;
-
-	path = search_path_mode(filename, X_OK);
-	if (path)
-		return (path);
-	path = search_path_mode(filename, F_OK);
-	return (path);
 }
 
 void	validate_access(const char *path, const char *filename)
@@ -97,7 +49,6 @@ void	validate_access(const char *path, const char *filename)
 		err_exit(path, "Permission denied", 126);
 }
 
-int	exec_nonbuiltin(t_node *node) __attribute__((noreturn));
 int	exec_nonbuiltin(t_node *node)
 {
 	char		*path;
