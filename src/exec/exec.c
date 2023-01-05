@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:32 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:12:16 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:18:32 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ pid_t	exec_pipeline(t_node *node)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
-		// child process
 		reset_signal();
 		prepare_pipe_child(node);
 		if (is_builtin(node))
@@ -98,7 +97,6 @@ pid_t	exec_pipeline(t_node *node)
 		else
 			exec_nonbuiltin(node);
 	}
-	// parent process
 	prepare_pipe_parent(node);
 	if (node->next)
 		return (exec_pipeline(node->next));

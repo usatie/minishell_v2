@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 14:13:57 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:19:57 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,17 @@ struct s_token {
 struct s_node {
 	t_node_kind	kind;
 	t_node		*next;
-	// CMD
+
 	t_token		*args;
 	t_node		*redirects;
-	// REDIR
+
 	int			targetfd;
 	t_token		*filename;
 	t_token		*delimiter;
 	bool		is_delim_unquoted;
 	int			filefd;
 	int			stashed_targetfd;
-	// PIPELINE
+
 	int			inpipe[2];
 	int			outpipe[2];
 	t_node		*command;

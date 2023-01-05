@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:33 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 13:19:09 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:18:18 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,6 @@ static char	*search_path_mode(const char *filename, int mode)
 	while (envpath && *envpath)
 	{
 		set_path(path, PATH_MAX, filename, &envpath);
-		// /bin:/usr/bin
-		//     ^
-		//     end
 		if (access(path, mode) == 0)
 		{
 			dup = strdup(path);

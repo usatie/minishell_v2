@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:56 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:26:51 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:17:48 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,11 @@ bool	consume_single_quote(char **rest, char *line)
 {
 	if (*line == SINGLE_QUOTE_CHAR)
 	{
-		// skip quote
 		line++;
 		while (*line && *line != SINGLE_QUOTE_CHAR)
 			line++;
 		if (*line == '\0')
 			tokenize_error("Unclosed single quote", &line, line);
-		// skip quote
 		else
 			line++;
 		*rest = line;
@@ -61,13 +59,11 @@ bool	consume_double_quote(char **rest, char *line)
 {
 	if (*line == DOUBLE_QUOTE_CHAR)
 	{
-		// skip quote
 		line++;
 		while (*line && *line != DOUBLE_QUOTE_CHAR)
 			line++;
 		if (*line == '\0')
 			tokenize_error("Unclosed double quote", &line, line);
-		// skip quote
 		else
 			line++;
 		*rest = line;

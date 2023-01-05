@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:29 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 12:51:19 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:18:54 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,13 @@ static void	map_insert(t_map *map, const char *name, const char *value)
 
 int	map_set(t_map *map, const char *name, const char *value)
 {
-	t_item	*cur;
+	t_item	*item;
 
 	if (name == NULL || !is_identifier(name))
 		return (-1);
-	cur = map_get(map, name);
-	// found
-	if (cur)
-		item_update(cur, value);
-	// not found
+	item = map_get(map, name);
+	if (item)
+		item_update(item, value);
 	else
 		map_insert(map, name, value);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:36 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:20:25 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	append_single_quote(char **dst, char **rest, char *p)
 {
 	if (*p == SINGLE_QUOTE_CHAR)
 	{
-		// skip quote
 		append_char(dst, *p++);
 		while (*p != SINGLE_QUOTE_CHAR)
 		{
@@ -66,7 +65,6 @@ void	append_single_quote(char **dst, char **rest, char *p)
 				assert_error("Unclosed single quote");
 			append_char(dst, *p++);
 		}
-		// skip quote
 		append_char(dst, *p++);
 		*rest = p;
 	}
@@ -78,7 +76,6 @@ void	append_double_quote(char **dst, char **rest, char *p)
 {
 	if (*p == DOUBLE_QUOTE_CHAR)
 	{
-		// skip quote
 		append_char(dst, *p++);
 		while (*p != DOUBLE_QUOTE_CHAR)
 		{
@@ -91,7 +88,6 @@ void	append_double_quote(char **dst, char **rest, char *p)
 			else
 				append_char(dst, *p++);
 		}
-		// skip quote
 		append_char(dst, *p++);
 		*rest = p;
 	}
@@ -128,13 +124,13 @@ void	expand_variable_tok(t_token *tok)
 	expand_variable_tok(tok->next);
 }
 
+// do not expand heredoc delimiter
 void	expand_variable(t_node *node)
 {
 	if (node == NULL)
 		return ;
 	expand_variable_tok(node->args);
 	expand_variable_tok(node->filename);
-	// do not expand heredoc delimiter
 	expand_variable(node->redirects);
 	expand_variable(node->command);
 	expand_variable(node->next);

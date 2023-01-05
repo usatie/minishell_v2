@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:11:53 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 14:11:53 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:17:57 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	append_path_elm(char *dst, char **rest, char *src)
 	elm_len = 0;
 	while (src[elm_len] && src[elm_len] != '/')
 		elm_len++;
-	// TODO: strcat, strncat is unsafe
 	if (dst[strlen(dst) - 1] != '/')
 		strcat(dst, "/");
 	strncat(dst, src, elm_len);

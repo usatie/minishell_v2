@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:37 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:37 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:19:30 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	remove_single_quote(char **dst, char **rest, char *p)
 {
 	if (*p == SINGLE_QUOTE_CHAR)
 	{
-		// skip quote
 		p++;
 		while (*p != SINGLE_QUOTE_CHAR)
 		{
@@ -25,7 +24,6 @@ void	remove_single_quote(char **dst, char **rest, char *p)
 				assert_error("Unclosed single quote");
 			append_char(dst, *p++);
 		}
-		// skip quote
 		p++;
 		*rest = p;
 	}
@@ -37,7 +35,6 @@ void	remove_double_quote(char **dst, char **rest, char *p)
 {
 	if (*p == DOUBLE_QUOTE_CHAR)
 	{
-		// skip quote
 		p++;
 		while (*p != DOUBLE_QUOTE_CHAR)
 		{
@@ -45,7 +42,6 @@ void	remove_double_quote(char **dst, char **rest, char *p)
 				assert_error("Unclosed double quote");
 			append_char(dst, *p++);
 		}
-		// skip quote
 		p++;
 		*rest = p;
 	}
