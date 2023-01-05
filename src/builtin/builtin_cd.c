@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:55:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:14:45 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:42:43 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,30 +106,43 @@ char	*resolve_pwd(char *oldpwd, char *path)
 	return (dup);
 }
 
-int	builtin_cd(char **argv)
+void	update_oldpwd(char *pwd)
 {
-	char	*home;
-	char	*pwd;
-	char	path[PATH_MAX];
-	char	*newpwd;
-
-	pwd = xgetenv("PWD");
 	if (pwd == NULL)
 		map_set(g_ctx.envmap, "OLDPWD", "");
 	else
 		map_set(g_ctx.envmap, "OLDPWD", pwd);
-	if (argv[1] == NULL)
+}
+
+int	set_path(char *path, size_t path_size, char *arg)
+{
+	char	*home;
+
+	if (arg == NULL)
 	{
 		home = xgetenv("HOME");
 		if (home == NULL)
 		{
 			builtin_error("cd", NULL, "HOME not set");
-			return (1);
+			return (-1);
 		}
-		strlcpy(path, home, PATH_MAX);
+		strlcpy(path, home, path_size);
 	}
 	else
-		strlcpy(path, argv[1], PATH_MAX);
+		strlcpy(path, arg, path_size);
+	return (0);
+}
+
+int	builtin_cd(char **argv)
+{
+	char	*pwd;
+	char	path[PATH_MAX];
+	char	*newpwd;
+
+	pwd = xgetenv("PWD");
+	update_oldpwd(pwd);
+	if (set_path(path, PATH_MAX, argv[1]) < 0)
+		return (1);
 	if (chdir(path) < 0)
 	{
 		builtin_error("cd", NULL, "chdir");
