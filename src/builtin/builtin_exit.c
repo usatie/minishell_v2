@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:17 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:17 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:13:51 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	builtin_exit(char **argv)
 	char	*endptr;
 
 	if (argv[1] == NULL)
-		exit(last_status);
+		exit(g_ctx.last_status);
 	if (argv[2])
 	{
 		xperror("exit: too many arguments");

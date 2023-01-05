@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:32 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:32 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:12:16 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	exec_nonbuiltin(t_node *node)
 	if (strchr(path, '/') == NULL)
 		path = search_path(path);
 	validate_access(path, argv[0]);
-	execve(path, argv, get_environ(envmap));
+	execve(path, argv, get_environ(g_ctx.envmap));
 	free_argv(argv);
 	reset_redirect(node->command->redirects);
 	fatal_error("execve");

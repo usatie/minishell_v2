@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:48 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:15:32 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include "minishell.h"
 
 #include <string.h>
-
-bool	readline_interrupted = false;
 
 /*
    Here Documents
@@ -54,13 +52,13 @@ int	read_heredoc(const char *delimiter, bool is_delim_unquoted)
 
 	if (pipe(pfd) < 0)
 		fatal_error("pipe");
-	readline_interrupted = false;
+	g_ctx.readline_interrupted = false;
 	while (1)
 	{
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (readline_interrupted)
+		if (g_ctx.readline_interrupted)
 		{
 			free(line);
 			break ;
@@ -76,7 +74,7 @@ int	read_heredoc(const char *delimiter, bool is_delim_unquoted)
 		free(line);
 	}
 	close(pfd[1]);
-	if (readline_interrupted)
+	if (g_ctx.readline_interrupted)
 	{
 		close(pfd[0]);
 		return (-1);

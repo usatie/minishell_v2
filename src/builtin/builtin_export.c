@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:19 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:19 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:14:07 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_allenv(void)
 {
 	t_item	*cur;
 
-	cur = envmap->item_head.next;
+	cur = g_ctx.envmap->item_head.next;
 	while (cur)
 	{
 		if (!item_exported(cur))
@@ -45,7 +45,7 @@ int	builtin_export(char **argv)
 	i = 1;
 	while (argv[i])
 	{
-		if (map_put(envmap, argv[i], true, ATTR_EXPORT) < 0)
+		if (map_put(g_ctx.envmap, argv[i], true, ATTR_EXPORT) < 0)
 		{
 			builtin_error("export", argv[i], "not a valid identifier");
 			status = 1;

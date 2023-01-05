@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:55 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:04:26 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:11:42 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_token	*tokenize(char *line)
 	t_token	head;
 	t_token	*tok;
 
-	syntax_error = false;
+	g_ctx.syntax_error = false;
 	head.next = NULL;
 	tok = &head;
 	while (*line)

@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:51 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:51 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:13:31 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	handler(int signum)
 {
-	sig = signum;
+	g_ctx.sig = signum;
 }
 
 void	reset_sig(int signum)

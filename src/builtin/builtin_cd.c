@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:55:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:55:36 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:14:45 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,9 @@ int	builtin_cd(char **argv)
 
 	pwd = xgetenv("PWD");
 	if (pwd == NULL)
-		map_set(envmap, "OLDPWD", "");
+		map_set(g_ctx.envmap, "OLDPWD", "");
 	else
-		map_set(envmap, "OLDPWD", pwd);
+		map_set(g_ctx.envmap, "OLDPWD", pwd);
 	if (argv[1] == NULL)
 	{
 		home = xgetenv("HOME");
@@ -136,7 +136,7 @@ int	builtin_cd(char **argv)
 		return (1);
 	}
 	newpwd = resolve_pwd(pwd, path);
-	map_set(envmap, "PWD", newpwd);
+	map_set(g_ctx.envmap, "PWD", newpwd);
 	free(newpwd);
 	return (0);
 }

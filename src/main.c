@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:39 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:39 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:16:54 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <readline/history.h>
 #include "minishell.h"
 
-int	last_status;
+t_context	g_ctx = {};
 
 void	interpret(char *line, int *stat_loc)
 {
@@ -26,12 +26,12 @@ void	interpret(char *line, int *stat_loc)
 	tok = tokenize(line);
 	if (at_eof(tok))
 		;
-	else if (syntax_error)
+	else if (g_ctx.syntax_error)
 		*stat_loc = ERROR_TOKENIZE;
 	else
 	{
 		node = parse(tok);
-		if (syntax_error)
+		if (g_ctx.syntax_error)
 			*stat_loc = ERROR_PARSE;
 		else
 		{
@@ -49,7 +49,7 @@ int	main(void)
 
 	initenv();
 	setup_signal();
-	last_status = 0;
+	g_ctx.last_status = 0;
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -57,8 +57,8 @@ int	main(void)
 			break ;
 		if (*line)
 			add_history(line);
-		interpret(line, &last_status);
+		interpret(line, &g_ctx.last_status);
 		free(line);
 	}
-	exit(last_status);
+	exit(g_ctx.last_status);
 }
