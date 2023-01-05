@@ -3,7 +3,9 @@ CC       = cc
 RLDIR    = $(shell brew --prefix readline)
 INCLUDES = -I include -I$(RLDIR)/include
 CFLAGS   = -Wall -Wextra -Werror $(INCLUDES)
-LIBS     = -lreadline -L$(RLDIR)/lib
+LIBFTDIR = libft
+LIBFT    = $(LIBFTDIR)/libft.a
+LIBS     = -lreadline -L$(RLDIR)/lib -lft -L$(LIBFTDIR)
 SRCS     = src/main.c\
            src/error/error.c\
            src/error/error_exit.c\
@@ -56,14 +58,19 @@ OBJS     = $(SRCS:%.c=%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(LIBS) -o $(NAME) $(OBJS)
+
+$(LIBFT):
+	$(MAKE) -C $(LIBFTDIR)
 
 clean:
 	$(RM) $(OBJS)
+	$(MAKE) clean -C $(LIBFTDIR)
 
 fclean: clean
 	$(RM) $(NAME)
+	$(MAKE) fclean -C $(LIBFTDIR)
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 18:10:06 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:42:50 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stddef.h>
 # include <stdbool.h>
 # include <signal.h>
+# include "libft.h"
 
 # define ERROR_TOKENIZE 258
 # define ERROR_PARSE 258
