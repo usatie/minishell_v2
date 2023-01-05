@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 09:17:35 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 10:56:26 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,46 +23,21 @@
 # define SINGLE_QUOTE_CHAR '\''
 # define DOUBLE_QUOTE_CHAR '"'
 
-typedef struct s_token		t_token;
-typedef enum e_token_kind	t_token_kind;
-typedef enum e_node_kind	t_node_kind;
-typedef struct s_node		t_node;
-typedef struct s_map		t_map;
-typedef struct s_item		t_item;
-
-extern int						last_status;
-extern bool						syntax_error;
-extern bool						readline_interrupted;
-extern volatile sig_atomic_t	sig;
-extern t_map	*envmap;
-
-// error.c
-void	perror_prefix(void);
-void	todo(const char *msg) __attribute__((noreturn));
-void	fatal_error(const char *msg) __attribute__((noreturn));
-void	assert_error(const char *msg) __attribute__((noreturn));
-void	err_exit(const char *location, const char *msg, int status) __attribute__((noreturn));
-void	tokenize_error(const char *location, char **rest, char *line);
-void	parse_error(const char *location, t_token **rest, t_token *tok);
-void	xperror(const char *location);
-void	builtin_error(const char *func, const char *name, const char *err);
-
-typedef struct s_token		t_token;
+typedef struct s_token			t_token;
+typedef enum e_token_kind		t_token_kind;
+typedef enum e_node_kind		t_node_kind;
+typedef struct s_node			t_node;
+typedef struct s_map			t_map;
+typedef struct s_item			t_item;
+typedef struct s_token			t_token;
+typedef struct s_node			t_node;
 enum e_token_kind {
 	TK_WORD,
 	TK_RESERVED,
 	TK_OP,
 	TK_EOF,
 };
-typedef enum e_token_kind	t_token_kind;
-
-// `word` is zero terminated string.
-struct s_token {
-	char			*word;
-	t_token_kind	kind;
-	t_token			*next;
-};
-
+typedef enum e_token_kind		t_token_kind;
 enum e_node_kind {
 	ND_PIPELINE,
 	ND_SIMPLE_CMD,
@@ -71,9 +46,15 @@ enum e_node_kind {
 	ND_REDIR_APPEND,
 	ND_REDIR_HEREDOC,
 };
-typedef enum e_node_kind	t_node_kind;
+typedef enum e_node_kind		t_node_kind;
 
-typedef struct s_node	t_node;
+// `word` is zero terminated string.
+struct s_token {
+	char			*word;
+	t_token_kind	kind;
+	t_token			*next;
+};
+
 struct s_node {
 	t_node_kind	kind;
 	t_node		*next;
@@ -103,6 +84,7 @@ struct s_node {
 #define ERROR_PARSE 258
 
 # define ATTR_EXPORT 0x0000001
+
 struct s_item {
 	char	*name;
 	char	*value;
@@ -114,15 +96,36 @@ struct s_map {
 	t_item	item_head;
 };
 
+extern int						last_status;
+extern bool						syntax_error;
+extern bool						readline_interrupted;
+extern volatile sig_atomic_t	sig;
+extern t_map					*envmap;
+
+// error.c
+void	perror_prefix(void);
+void	todo(const char *msg)
+		__attribute__((noreturn));
+void	fatal_error(const char *msg)
+		__attribute__((noreturn));
+void	assert_error(const char *msg)
+		__attribute__((noreturn));
+void	err_exit(const char *location, const char *msg, int status)
+		__attribute__((noreturn));
+void	tokenize_error(const char *location, char **rest, char *line);
+void	parse_error(const char *location, t_token **rest, t_token *tok);
+void	xperror(const char *location);
+void	builtin_error(const char *func, const char *name, const char *err);
+
 // tokenize.c
 t_token	*tokenize(char *line);
 char	**token_list_to_argv(t_token *tok);
-bool   	is_blank(char c);
-bool   	consume_blank(char **rest, char *line);
-bool   	startswith(const char *s, const char *keyword);
-bool   	is_operator(const char *s);
-bool   	is_metacharacter(char c);
-bool   	is_word(const char *s);
+bool	is_blank(char c);
+bool	consume_blank(char **rest, char *line);
+bool	startswith(const char *s, const char *keyword);
+bool	is_operator(const char *s);
+bool	is_metacharacter(char c);
+bool	is_word(const char *s);
 t_token	*operator(char **rest, char *line);
 t_token	*word(char **rest, char *line);
 // tokenize/token.c
@@ -169,17 +172,16 @@ t_node	*redirect_in(t_token **rest, t_token *tok);
 t_node	*redirect_append(t_token **rest, t_token *tok);
 t_node	*redirect_heredoc(t_token **rest, t_token *tok);
 
-
 // redirect.c
 void	do_redirect(t_node *redirects);
 void	reset_redirect(t_node *redirects);
 
 // redirect/stashfd.c
-int	stashfd(int fd);
+int		stashfd(int fd);
 // redirect/open_redir_file.c
 int		open_redir_file(t_node *node);
 // redirect/heredoc.c
-int	read_heredoc(const char *delimiter, bool is_delim_unquoted);
+int		read_heredoc(const char *delimiter, bool is_delim_unquoted);
 
 // pipe.c
 void	prepare_pipe(t_node *node);
@@ -231,7 +233,8 @@ char	*item_get_string(t_item *item);
 bool	item_exported(t_item *item);
 t_map	*map_new(void);
 t_item	*map_get(t_map *map, const char *name);
-int		map_put(t_map *map, const char *string, bool allow_empty_value, int attr);
+int		map_put(t_map *map, const char *string, bool allow_empty_value,
+			int attr);
 int		map_set(t_map *map, const char *name, const char *value);
 int		map_set_attr(t_map *map, const char *name, const char *value, int attr);
 int		map_unset(t_map *map, const char *name);

@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:24 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:24 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 10:49:22 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	map_unset(t_map *map, const char *name)
 	return (0);
 }
 
-int	map_put(t_map *map, const char *string, bool allow_empty_value, int attributes)
+int	map_put(t_map *map, const char *string, bool allow_empty_value, int attr)
 {
 	int		result;
 	char	*name_end;
@@ -92,7 +92,7 @@ int	map_put(t_map *map, const char *string, bool allow_empty_value, int attribut
 		if (name == NULL || value == NULL)
 			fatal_error("strdup");
 	}
-	result = map_set_attr(map, name, value, attributes);
+	result = map_set_attr(map, name, value, attr);
 	free(name);
 	free(value);
 	return (result);
