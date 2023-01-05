@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:51 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:51 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:13:12 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include "minishell.h"
-
-volatile sig_atomic_t	sig = 0;
 
 static int	check_state(void);
 
@@ -39,12 +37,12 @@ void	reset_signal(void)
 
 static int	check_state(void)
 {
-	if (sig == 0)
+	if (g_ctx.sig == 0)
 		return (0);
-	else if (sig == SIGINT)
+	else if (g_ctx.sig == SIGINT)
 	{
-		sig = 0;
-		readline_interrupted = true;
+		g_ctx.sig = 0;
+		g_ctx.readline_interrupted = true;
 		rl_replace_line("", 0);
 		rl_done = 1;
 		return (0);

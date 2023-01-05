@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 10:56:26 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:09:19 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ typedef struct s_map			t_map;
 typedef struct s_item			t_item;
 typedef struct s_token			t_token;
 typedef struct s_node			t_node;
+typedef struct s_context		t_context;
+extern t_context				g_ctx;
+
 enum e_token_kind {
 	TK_WORD,
 	TK_RESERVED,
@@ -38,6 +41,7 @@ enum e_token_kind {
 	TK_EOF,
 };
 typedef enum e_token_kind		t_token_kind;
+
 enum e_node_kind {
 	ND_PIPELINE,
 	ND_SIMPLE_CMD,
@@ -96,11 +100,13 @@ struct s_map {
 	t_item	item_head;
 };
 
-extern int						last_status;
-extern bool						syntax_error;
-extern bool						readline_interrupted;
-extern volatile sig_atomic_t	sig;
-extern t_map					*envmap;
+struct s_context {
+	int						last_status;
+	bool					syntax_error;
+	bool					readline_interrupted;
+	volatile sig_atomic_t	sig;
+	t_map					*envmap;
+};
 
 // error.c
 void	perror_prefix(void);

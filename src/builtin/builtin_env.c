@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:15 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:15 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:14:27 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	builtin_env(char **argv)
 	t_item	*cur;
 
 	(void)argv;
-	cur = envmap->item_head.next;
+	cur = g_ctx.envmap->item_head.next;
 	while (cur)
 	{
 		if (!item_exported(cur))

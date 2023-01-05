@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:38 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:38 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:11:56 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ void	expand_special_parameter_str(char **dst, char **rest, char *p)
 	if (!is_special_parameter(p))
 		assert_error("Expected special parameter");
 	p += 2;
-	append_num(dst, last_status);
+	append_num(dst, g_ctx.last_status);
 	*rest = p;
 }

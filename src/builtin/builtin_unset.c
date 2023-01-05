@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:21 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:21 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:14:17 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	builtin_unset(char **argv)
 	i = 1;
 	while (argv[i])
 	{
-		if (map_unset(envmap, argv[i]) < 0)
+		if (map_unset(g_ctx.envmap, argv[i]) < 0)
 		{
 			builtin_error("unset", argv[i], "not a valid identifier");
 			status = 1;
