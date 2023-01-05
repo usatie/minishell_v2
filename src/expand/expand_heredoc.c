@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:35 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:35 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:28:27 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*expand_heredoc_line(char *line)
 	char	*p;
 
 	p = line;
-	new_word = calloc(1, sizeof(char));
+	new_word = ft_calloc(1, sizeof(char));
 	if (new_word == NULL)
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	while (*p)
 	{
 		if (is_variable(p))

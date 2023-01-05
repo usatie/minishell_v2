@@ -6,20 +6,19 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:44 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:44 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:26:08 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
 
 t_node	*new_node(t_node_kind kind)
 {
 	t_node	*node;
 
-	node = calloc(1, sizeof(*node));
+	node = ft_calloc(1, sizeof(*node));
 	if (node == NULL)
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	node->kind = kind;
 	return (node);
 }

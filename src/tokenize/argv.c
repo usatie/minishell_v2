@@ -6,31 +6,39 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:52 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:43:37 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:24:36 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
 
-char	**tail_recursive(t_token *tok, int nargs, char **argv)
+static size_t	argv_len(t_token *tok)
 {
-	if (tok == NULL || tok->kind == TK_EOF)
-		return (argv);
-	argv = reallocf(argv, (nargs + 2) * sizeof(char *));
-	argv[nargs] = ft_strdup(tok->word);
-	if (argv[nargs] == NULL)
-		fatal_error("ft_strdup");
-	argv[nargs + 1] = NULL;
-	return (tail_recursive(tok->next, nargs + 1, argv));
+	size_t	len;
+
+	len = 0;
+	while (tok && !at_eof(tok))
+	{
+		len++;
+		tok = tok->next;
+	}
+	return (len);
 }
 
 char	**token_list_to_argv(t_token *tok)
 {
 	char	**argv;
+	size_t	i;
 
-	argv = calloc(1, sizeof(char *));
+	argv = ft_calloc(argv_len(tok) + 1, sizeof(char *));
 	if (argv == NULL)
-		fatal_error("calloc");
-	return (tail_recursive(tok, 0, argv));
+		fatal_error("ft_calloc");
+	i = 0;
+	while (tok && !at_eof(tok))
+	{
+		argv[i] = ft_strdup(tok->word);
+		i++;
+		tok = tok->next;
+	}
+	return (argv);
 }

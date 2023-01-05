@@ -6,11 +6,10 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:23 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 18:28:21 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:26:55 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
 #include "minishell.h"
@@ -43,7 +42,7 @@ char	**get_environ(t_map *map)
 	char	**environ;
 
 	size = map_len(map, false) + 1;
-	environ = calloc(size, sizeof(char *));
+	environ = ft_calloc(size, sizeof(char *));
 	i = 0;
 	item = map->item_head.next;
 	while (item)

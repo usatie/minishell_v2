@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:28 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:48:22 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:26:36 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_item	*item_new(char *name, char *value, int attributes)
 {
 	t_item	*item;
 
-	item = calloc(1, sizeof(*item));
+	item = ft_calloc(1, sizeof(*item));
 	if (item == NULL)
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	item->name = name;
 	item->value = value;
 	item->attributes = attributes;

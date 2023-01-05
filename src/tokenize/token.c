@@ -6,20 +6,19 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:55 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:43:37 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:27:47 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
 
 t_token	*new_token(char *word, t_token_kind kind)
 {
 	t_token	*tok;
 
-	tok = calloc(1, sizeof(*tok));
+	tok = ft_calloc(1, sizeof(*tok));
 	if (tok == NULL)
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	tok->word = word;
 	tok->kind = kind;
 	return (tok);

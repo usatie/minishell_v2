@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:42:24 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:27:05 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <readline/readline.h>
+#include "ft_printf.h"
 #include "minishell.h"
 
 /*
@@ -60,7 +61,7 @@ static void	readline_heredoc_loop(int pfd[2], const char *delimiter,
 		}
 		if (is_delim_unquoted)
 			line = expand_heredoc_line(line);
-		dprintf(pfd[1], "%s\n", line);
+		ft_dprintf(pfd[1], "%s\n", line);
 		free(line);
 	}
 }

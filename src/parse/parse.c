@@ -6,11 +6,10 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:45 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:45 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:26:03 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
 
 // <pipeline> = <simple_command> ('|' <pipeline>)

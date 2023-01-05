@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:17 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:45:29 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:12:47 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	builtin_exit(char **argv)
 	if (is_numeric(arg))
 	{
 		errno = 0;
-		res = strtol(arg, &endptr, 10);
+		res = ft_strtol(arg, &endptr, 10);
 		if (errno == 0 && *endptr == '\0')
 			exit((int)res);
 	}

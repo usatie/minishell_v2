@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:39 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 10:51:20 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:25:54 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void	expand_variable_str(char **dst, char **rest, char *p)
 	char	*name;
 	char	*value;
 
-	name = calloc(1, sizeof(char));
+	name = ft_calloc(1, sizeof(char));
 	if (name == NULL)
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	if (*p != '$')
 		assert_error("Expected dollar sign");
 	p++;
