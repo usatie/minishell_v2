@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:33 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 17:18:18 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:49:56 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ static void	set_path(char *path, size_t pathsize,
 {
 	char	*end;
 
-	bzero(path, pathsize);
-	end = strchr(*envpath, ':');
+	ft_bzero(path, pathsize);
+	end = ft_strchr(*envpath, ':');
 	if (*envpath == end)
-		strlcpy(path, ".", pathsize);
+		strncpy(path, ".", pathsize);
 	else if (end)
 		strncpy(path, *envpath, end - *envpath);
 	else
-		strlcpy(path, *envpath, pathsize);
-	strlcat(path, "/", pathsize);
-	strlcat(path, filename, pathsize);
+		ft_strlcpy(path, *envpath, pathsize);
+	ft_strlcat(path, "/", pathsize);
+	ft_strlcat(path, filename, pathsize);
 	if (end == NULL)
 		*envpath = NULL;
 	else
@@ -62,9 +62,9 @@ static char	*search_path_mode(const char *filename, int mode)
 		set_path(path, PATH_MAX, filename, &envpath);
 		if (access(path, mode) == 0)
 		{
-			dup = strdup(path);
+			dup = ft_strdup(path);
 			if (dup == NULL)
-				fatal_error("strdup");
+				fatal_error("ft_strdup");
 			return (dup);
 		}
 	}

@@ -6,13 +6,11 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:56 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 17:17:48 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:45:06 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#include <string.h>
 
 /*
 DEFINITIONS
@@ -86,9 +84,9 @@ t_token	*word(char **rest, char *line)
 		else
 			line++;
 	}
-	word = strndup(start, line - start);
+	word = ft_strndup(start, line - start);
 	if (word == NULL)
-		fatal_error("strndup");
+		fatal_error("ft_strndup");
 	*rest = line;
 	return (new_token(word, TK_WORD));
 }

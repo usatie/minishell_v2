@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:23 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:15:57 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 18:28:21 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <unistd.h>
 #include <limits.h>
 #include "minishell.h"
-
-#include <string.h>
 
 static void	envmap_init(t_map *map, char **ep);
 

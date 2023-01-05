@@ -6,14 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:24 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 14:08:33 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:52:09 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
-
-#include <string.h>
 
 t_map	*map_new(void)
 {
@@ -34,7 +32,7 @@ t_item	*map_get(t_map *map, const char *name)
 	cur = map->item_head.next;
 	while (cur)
 	{
-		if (strcmp(cur->name, name) == 0)
+		if (ft_strcmp(cur->name, name) == 0)
 			return (cur);
 		cur = cur->next;
 	}
@@ -52,7 +50,7 @@ int	map_unset(t_map *map, const char *name)
 	cur = map->item_head.next;
 	while (cur)
 	{
-		if (strcmp(cur->name, name) == 0)
+		if (ft_strcmp(cur->name, name) == 0)
 		{
 			prev->next = cur->next;
 			free(cur->name);

@@ -6,14 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:55 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:55 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:43:37 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
-
-#include <string.h>
 
 t_token	*new_token(char *word, t_token_kind kind)
 {
@@ -31,9 +29,9 @@ t_token	*tokdup(t_token *tok)
 {
 	char	*word;
 
-	word = strdup(tok->word);
+	word = ft_strdup(tok->word);
 	if (word == NULL)
-		fatal_error("strdup");
+		fatal_error("ft_strdup");
 	return (new_token(word, tok->kind));
 }
 
@@ -56,5 +54,5 @@ bool	equal_op(t_token *tok, char *op)
 {
 	if (tok->kind != TK_OP)
 		return (false);
-	return (strcmp(tok->word, op) == 0);
+	return (ft_strcmp(tok->word, op) == 0);
 }

@@ -6,13 +6,11 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:53 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 09:23:20 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:45:47 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#include <ctype.h>
 
 /*
 DEFINITIONS
@@ -35,12 +33,12 @@ DEFINITIONS
 
 bool	is_alpha_under(char c)
 {
-	return (isalpha(c) || c == '_');
+	return (ft_isalpha(c) || c == '_');
 }
 
 bool	is_alpha_num_under(char c)
 {
-	return (is_alpha_under(c) || isdigit(c));
+	return (is_alpha_under(c) || ft_isdigit(c));
 }
 
 bool	is_identifier(const char *s)

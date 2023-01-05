@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:32 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 17:18:32 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:46:10 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include "minishell.h"
-
-#include <string.h>
 
 void	validate_access(const char *path, const char *filename);
 int		exec_nonbuiltin(t_node *node) __attribute__((noreturn));
@@ -47,9 +45,9 @@ void	validate_access(const char *path, const char *filename)
 
 	if (path == NULL)
 		err_exit(filename, "command not found", 127);
-	if (strcmp(filename, "") == 0)
+	if (ft_strcmp(filename, "") == 0)
 		err_exit(filename, "command not found", 127);
-	if (strcmp(filename, "..") == 0)
+	if (ft_strcmp(filename, "..") == 0)
 		err_exit(filename, "command not found", 127);
 	if (access(path, F_OK) < 0)
 		err_exit(filename, "command not found", 127);
@@ -69,7 +67,7 @@ int	exec_nonbuiltin(t_node *node)
 	do_redirect(node->command->redirects);
 	argv = token_list_to_argv(node->command->args);
 	path = argv[0];
-	if (strchr(path, '/') == NULL)
+	if (ft_strchr(path, '/') == NULL)
 		path = search_path(path);
 	validate_access(path, argv[0]);
 	execve(path, argv, get_environ(g_ctx.envmap));

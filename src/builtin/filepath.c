@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:11:53 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 17:17:57 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:51:47 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ bool	consume_path(char **rest, char *path, char *elm)
 {
 	size_t	elm_len;
 
-	elm_len = strlen(elm);
-	if (strncmp(path, elm, elm_len) == 0)
+	elm_len = ft_strlen(elm);
+	if (ft_strncmp(path, elm, elm_len) == 0)
 	{
 		if (path[elm_len] == '\0' || path[elm_len] == '/')
 		{
@@ -54,8 +54,8 @@ void	append_path_elm(char *dst, char **rest, char *src)
 	elm_len = 0;
 	while (src[elm_len] && src[elm_len] != '/')
 		elm_len++;
-	if (dst[strlen(dst) - 1] != '/')
+	if (dst[ft_strlen(dst) - 1] != '/')
 		strcat(dst, "/");
-	strncat(dst, src, elm_len);
+	ft_strncat(dst, src, elm_len);
 	*rest = src + elm_len;
 }

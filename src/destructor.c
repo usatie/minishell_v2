@@ -6,14 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:22 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:22 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 18:27:38 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
-
-#include <stdio.h>
 
 void	free_node(t_node *node)
 {

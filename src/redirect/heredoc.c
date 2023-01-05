@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 12:39:30 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:42:24 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include "minishell.h"
-
-#include <string.h>
 
 /*
    Here Documents
@@ -55,7 +53,7 @@ static void	readline_heredoc_loop(int pfd[2], const char *delimiter,
 	{
 		line = readline("> ");
 		if (line == NULL || g_ctx.readline_interrupted
-			|| strcmp(line, delimiter) == 0)
+			|| ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;

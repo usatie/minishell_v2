@@ -6,14 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:28 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:28 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:48:22 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
-
-#include <string.h>
 
 t_item	*item_new(char *name, char *value, int attributes)
 {
@@ -38,17 +36,17 @@ char	*item_get_string(t_item *item)
 	size_t	strsize;
 	char	*string;
 
-	strsize = strlen(item->name) + 2;
+	strsize = ft_strlen(item->name) + 2;
 	if (item->value)
-		strsize += strlen(item->value);
+		strsize += ft_strlen(item->value);
 	string = malloc(strsize);
 	if (string == NULL)
 		fatal_error("malloc");
-	strlcpy(string, item->name, strsize);
+	ft_strlcpy(string, item->name, strsize);
 	if (item->value)
 	{
-		strlcat(string, "=", strsize);
-		strlcat(string, item->value, strsize);
+		ft_strlcat(string, "=", strsize);
+		ft_strlcat(string, item->value, strsize);
 	}
 	return (string);
 }

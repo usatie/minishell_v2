@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:17 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 18:00:03 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:45:29 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 #include <errno.h>
 #include "minishell.h"
 
-#include <ctype.h>
-
 bool	is_numeric(char *s)
 {
-	if (!isdigit(*s))
+	if (!ft_isdigit(*s))
 		return (false);
 	while (*s)
 	{
-		if (!isdigit(*s))
+		if (!ft_isdigit(*s))
 			return (false);
 		s++;
 	}

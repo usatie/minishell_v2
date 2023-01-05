@@ -6,14 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:57 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 14:09:42 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:46:10 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
-
-#include <string.h>
 
 static void	set_name_value(const char *string, char **name, char **value);
 
@@ -39,19 +37,19 @@ static void	set_name_value(const char *string, char **name, char **value)
 {
 	char	*name_end;
 
-	name_end = strchr(string, '=');
+	name_end = ft_strchr(string, '=');
 	if (name_end == NULL)
 	{
-		*name = strdup(string);
+		*name = ft_strdup(string);
 		*value = NULL;
 		if (*name == NULL)
-			fatal_error("strdup");
+			fatal_error("ft_strdup");
 	}
 	else
 	{
-		*name = strndup(string, name_end - string);
-		*value = strdup(name_end + 1);
+		*name = ft_strndup(string, name_end - string);
+		*value = ft_strdup(name_end + 1);
 		if (*name == NULL || *value == NULL)
-			fatal_error("strdup");
+			fatal_error("ft_strdup");
 	}
 }

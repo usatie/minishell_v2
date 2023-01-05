@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:55:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 18:05:00 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:47:35 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <limits.h>
 #include <unistd.h>
 #include "minishell.h"
-
-#include <string.h>
 
 static char	*resolve_pwd(char *oldpwd, char *path);
 static void	update_oldpwd(char *pwd);
@@ -65,9 +63,9 @@ static char	*resolve_pwd(char *oldpwd, char *path)
 	char	*dup;
 
 	if (*path == '/' || oldpwd == NULL)
-		strlcpy(newpwd, "/", PATH_MAX);
+		ft_strlcpy(newpwd, "/", PATH_MAX);
 	else
-		strlcpy(newpwd, oldpwd, PATH_MAX);
+		ft_strlcpy(newpwd, oldpwd, PATH_MAX);
 	while (*path)
 	{
 		if (*path == '/')
@@ -79,9 +77,9 @@ static char	*resolve_pwd(char *oldpwd, char *path)
 		else
 			append_path_elm(newpwd, &path, path);
 	}
-	dup = strdup(newpwd);
+	dup = ft_strdup(newpwd);
 	if (dup == NULL)
-		fatal_error("strdup");
+		fatal_error("ft_strdup");
 	return (dup);
 }
 
@@ -105,9 +103,9 @@ static int	set_path(char *path, size_t path_size, char *arg)
 			xperror2("cd", "HOME not set");
 			return (-1);
 		}
-		strlcpy(path, home, path_size);
+		ft_strlcpy(path, home, path_size);
 	}
 	else
-		strlcpy(path, arg, path_size);
+		ft_strlcpy(path, arg, path_size);
 	return (0);
 }
