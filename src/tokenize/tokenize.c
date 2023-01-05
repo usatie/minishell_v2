@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:55 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:55 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:04:26 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,15 @@ t_token	*tokenize(char *line)
 		if (consume_blank(&line, line))
 			continue ;
 		else if (is_metacharacter(*line))
-			tok = tok->next = operator(&line, line);
+		{
+			tok->next = operator(&line, line);
+			tok = tok->next;
+		}
 		else if (is_word(line))
-			tok = tok->next = word(&line, line);
+		{
+			tok->next = word(&line, line);
+			tok = tok->next;
+		}
 		else
 			tokenize_error("Unexpected Token", &line, line);
 	}
