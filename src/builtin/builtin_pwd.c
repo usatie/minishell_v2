@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:20 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:20 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 18:02:52 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	builtin_pwd(char **argv)
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)
 		{
-			builtin_error("pwd", NULL, "getcwd");
+			xperror3("pwd", "getcwd", NULL);
 			return (1);
 		}
 		write(STDOUT_FILENO, cwd, strlen(cwd));

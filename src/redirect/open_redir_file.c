@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:49 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 13:17:27 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:59:36 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	open_redir_file(t_node *node)
 	{
 		if (node->kind == ND_REDIR_OUT || node->kind == ND_REDIR_APPEND
 			|| node->kind == ND_REDIR_IN)
-			xperror(node->filename->word);
+			xperror2(node->filename->word, NULL);
 		return (-1);
 	}
 	node->filefd = stashfd(node->filefd);

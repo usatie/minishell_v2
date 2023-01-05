@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 17:27:39 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 18:10:06 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,9 @@ void	err_exit(const char *location, const char *msg, int status)
 		__attribute__((noreturn));
 void	tokenize_error(const char *location, char **rest, char *line);
 void	parse_error(const char *location, t_token **rest, t_token *tok);
-void	xperror(const char *location);
-void	builtin_error(const char *func, const char *name, const char *err);
+void	xperror2(const char *s1, const char *err_msg);
+void	xperror3(const char *s1, const char *s2, const char *err_msg);
+void	xperror_invalid_identifier(const char *s, const char *identifier);
 
 // tokenize.c
 t_token	*tokenize(char *line);

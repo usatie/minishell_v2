@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:19 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:14:07 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 18:10:20 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	builtin_export(char **argv)
 	{
 		if (map_put(g_ctx.envmap, argv[i], true, ATTR_EXPORT) < 0)
 		{
-			builtin_error("export", argv[i], "not a valid identifier");
+			xperror_invalid_identifier("export", argv[i]);
 			status = 1;
 		}
 		i++;

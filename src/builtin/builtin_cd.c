@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:55:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 14:14:08 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 18:05:00 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	builtin_cd(char **argv)
 		return (1);
 	if (chdir(path) < 0)
 	{
-		builtin_error("cd", NULL, "chdir");
+		xperror3("cd", path, NULL);
 		return (1);
 	}
 	newpwd = resolve_pwd(pwd, path);
@@ -102,7 +102,7 @@ static int	set_path(char *path, size_t path_size, char *arg)
 		home = xgetenv("HOME");
 		if (home == NULL)
 		{
-			builtin_error("cd", NULL, "HOME not set");
+			xperror2("cd", "HOME not set");
 			return (-1);
 		}
 		strlcpy(path, home, path_size);

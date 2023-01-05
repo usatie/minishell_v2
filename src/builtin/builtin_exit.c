@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:17 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:13:51 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 18:00:03 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	builtin_exit(char **argv)
 		exit(g_ctx.last_status);
 	if (argv[2])
 	{
-		xperror("exit: too many arguments");
+		xperror2("exit", "too many arguments");
 		return (1);
 	}
 	arg = argv[1];
@@ -50,6 +50,6 @@ int	builtin_exit(char **argv)
 		if (errno == 0 && *endptr == '\0')
 			exit((int)res);
 	}
-	xperror("exit: numeric argument required");
+	xperror2("exit", "numeric argument required");
 	exit(255);
 }
