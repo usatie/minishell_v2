@@ -45,8 +45,10 @@ SRCS     = src/main.c\
 		   src/builtin/builtin_cd.c\
 		   src/builtin/builtin_echo.c\
 		   src/builtin/builtin_pwd.c\
+		   src/builtin/filepath.c\
 		   src/environ/map.c\
 		   src/environ/map_set.c\
+		   src/environ/map_put.c\
 		   src/environ/map_item.c\
 		   src/environ/environ.c\
 

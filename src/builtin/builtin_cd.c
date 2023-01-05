@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:55:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:42:43 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 14:14:08 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #include "minishell.h"
 
 #include <string.h>
+
+static char	*resolve_pwd(char *oldpwd, char *path);
+static void	update_oldpwd(char *pwd);
+static int	set_path(char *path, size_t path_size, char *arg);
 
 /*
 cd [-L|-P] [dir]
@@ -33,105 +37,6 @@ cd [-L|-P] [dir]
 	  is written to the standard output.  The return value is true if the
 	  directory was successfully changed; false otherwise.
 */
-bool	consume_path(char **rest, char *path, char *elm)
-{
-	size_t	elm_len;
-
-	elm_len = strlen(elm);
-	if (strncmp(path, elm, elm_len) == 0)
-	{
-		if (path[elm_len] == '\0' || path[elm_len] == '/')
-		{
-			*rest = path + elm_len;
-			return (true);
-		}
-	}
-	return (false);
-}
-
-void	delete_last_elm(char *path)
-{
-	char	*start;
-	char	*last_slash_ptr;
-
-	start = path;
-	last_slash_ptr = NULL;
-	while (*path)
-	{
-		if (*path == '/')
-			last_slash_ptr = path;
-		path++;
-	}
-	if (last_slash_ptr != start)
-		*last_slash_ptr = '\0';
-}
-
-void	append_path_elm(char *dst, char **rest, char *src)
-{
-	size_t	elm_len;
-
-	elm_len = 0;
-	while (src[elm_len] && src[elm_len] != '/')
-		elm_len++;
-	// TODO: strcat, strncat is unsafe
-	if (dst[strlen(dst) - 1] != '/')
-		strcat(dst, "/");
-	strncat(dst, src, elm_len);
-	*rest = src + elm_len;
-}
-
-char	*resolve_pwd(char *oldpwd, char *path)
-{
-	char	newpwd[PATH_MAX];
-	char	*dup;
-
-	if (*path == '/' || oldpwd == NULL)
-		strlcpy(newpwd, "/", PATH_MAX);
-	else
-		strlcpy(newpwd, oldpwd, PATH_MAX);
-	while (*path)
-	{
-		if (*path == '/')
-			path++;
-		else if (consume_path(&path, path, "."))
-			;
-		else if (consume_path(&path, path, ".."))
-			delete_last_elm(newpwd);
-		else
-			append_path_elm(newpwd, &path, path);
-	}
-	dup = strdup(newpwd);
-	if (dup == NULL)
-		fatal_error("strdup");
-	return (dup);
-}
-
-void	update_oldpwd(char *pwd)
-{
-	if (pwd == NULL)
-		map_set(g_ctx.envmap, "OLDPWD", "");
-	else
-		map_set(g_ctx.envmap, "OLDPWD", pwd);
-}
-
-int	set_path(char *path, size_t path_size, char *arg)
-{
-	char	*home;
-
-	if (arg == NULL)
-	{
-		home = xgetenv("HOME");
-		if (home == NULL)
-		{
-			builtin_error("cd", NULL, "HOME not set");
-			return (-1);
-		}
-		strlcpy(path, home, path_size);
-	}
-	else
-		strlcpy(path, arg, path_size);
-	return (0);
-}
 
 int	builtin_cd(char **argv)
 {
@@ -151,5 +56,58 @@ int	builtin_cd(char **argv)
 	newpwd = resolve_pwd(pwd, path);
 	map_set(g_ctx.envmap, "PWD", newpwd);
 	free(newpwd);
+	return (0);
+}
+
+static char	*resolve_pwd(char *oldpwd, char *path)
+{
+	char	newpwd[PATH_MAX];
+	char	*dup;
+
+	if (*path == '/' || oldpwd == NULL)
+		strlcpy(newpwd, "/", PATH_MAX);
+	else
+		strlcpy(newpwd, oldpwd, PATH_MAX);
+	while (*path)
+	{
+		if (*path == '/')
+			path++;
+		else if (consume_path(&path, path, "."))
+			;
+		else if (consume_path(&path, path, ".."))
+			delete_last_path_elm(newpwd);
+		else
+			append_path_elm(newpwd, &path, path);
+	}
+	dup = strdup(newpwd);
+	if (dup == NULL)
+		fatal_error("strdup");
+	return (dup);
+}
+
+static void	update_oldpwd(char *pwd)
+{
+	if (pwd == NULL)
+		map_set(g_ctx.envmap, "OLDPWD", "");
+	else
+		map_set(g_ctx.envmap, "OLDPWD", pwd);
+}
+
+static int	set_path(char *path, size_t path_size, char *arg)
+{
+	char	*home;
+
+	if (arg == NULL)
+	{
+		home = xgetenv("HOME");
+		if (home == NULL)
+		{
+			builtin_error("cd", NULL, "HOME not set");
+			return (-1);
+		}
+		strlcpy(path, home, path_size);
+	}
+	else
+		strlcpy(path, arg, path_size);
 	return (0);
 }
