@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 17:19:57 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:27:39 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	append_char(char **s, char c);
 // expand/expand_quote_removal.c
 void	expand_quote_removal(t_node *node);
 // expand/expand_parameter.c
-void	expand_variable(t_node *node);
+void	expand_parameter(t_node *node);
 // expand/variable.c
 bool	is_variable(char *s);
 void	expand_variable_str(char **dst, char **rest, char *p);

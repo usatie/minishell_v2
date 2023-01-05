@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:34 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:27:55 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ void	append_char(char **s, char c)
 
 void	expand(t_node *node)
 {
-	expand_variable(node);
+	expand_parameter(node);
 	expand_quote_removal(node);
 }

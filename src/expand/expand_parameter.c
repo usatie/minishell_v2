@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 17:20:25 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 17:27:27 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ PARAMETERS
 	   to the variable's value.
 */
 
-void	append_single_quote(char **dst, char **rest, char *p)
+static void	append_single_quote(char **dst, char **rest, char *p)
 {
 	if (*p == SINGLE_QUOTE_CHAR)
 	{
@@ -72,7 +72,7 @@ void	append_single_quote(char **dst, char **rest, char *p)
 		assert_error("Expected single quote");
 }
 
-void	append_double_quote(char **dst, char **rest, char *p)
+static void	append_double_quote(char **dst, char **rest, char *p)
 {
 	if (*p == DOUBLE_QUOTE_CHAR)
 	{
@@ -95,7 +95,7 @@ void	append_double_quote(char **dst, char **rest, char *p)
 		assert_error("Expected double quote");
 }
 
-void	expand_variable_tok(t_token *tok)
+void	expand_parameter_tok(t_token *tok)
 {
 	char	*new_word;
 	char	*p;
@@ -121,17 +121,18 @@ void	expand_variable_tok(t_token *tok)
 	}
 	free(tok->word);
 	tok->word = new_word;
-	expand_variable_tok(tok->next);
+	expand_parameter_tok(tok->next);
 }
 
-// do not expand heredoc delimiter
-void	expand_variable(t_node *node)
+// heredoc delimiter will not be expanded
+// 
+void	expand_parameter(t_node *node)
 {
 	if (node == NULL)
 		return ;
-	expand_variable_tok(node->args);
-	expand_variable_tok(node->filename);
-	expand_variable(node->redirects);
-	expand_variable(node->command);
-	expand_variable(node->next);
+	expand_parameter_tok(node->args);
+	expand_parameter_tok(node->filename);
+	expand_parameter(node->redirects);
+	expand_parameter(node->command);
+	expand_parameter(node->next);
 }
