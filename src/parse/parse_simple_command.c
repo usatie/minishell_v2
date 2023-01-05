@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:47 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:47 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 10:50:26 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ void	append_node(t_node **node, t_node *elm);
 
 /*
 control operator
-	  A token that performs a control function.  It is one of the following symbols:
+	  A token that performs a control function.  It is one of the following
+      symbols:
 	  || & && ; ;; ( ) | <newline>
 */
 bool	is_control_operator(t_token *tok)
 {
-	static char	*const	operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
-	size_t				i = 0;
+	static char *const	operators[] = {"||", "&", "&&", ";", ";;", "(", ")",
+		"|", "\n"};
+	size_t				i;
 
+	i = 0;
 	while (i < sizeof(operators) / sizeof(*operators))
 	{
 		if (startswith(tok->word, operators[i]))

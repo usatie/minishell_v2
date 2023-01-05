@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:53:03 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:53:09 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 09:25:08 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <string.h>
 
-int		exec_builtin(t_node *node)
+int	exec_builtin(t_node *node)
 {
 	int		status;
 	char	**argv;
@@ -44,12 +44,13 @@ int		exec_builtin(t_node *node)
 
 bool	is_builtin(t_node *node)
 {
-	const char		*cmd_name;
-	char			*builtin_commands[] = {"exit", "export", "unset", "env", "cd", "echo", "pwd"};
-	unsigned int	i;
+	const char			*cmd_name;
+	static const char	*builtin_commands[] = {"exit", "export", "unset", "env",
+		"cd", "echo", "pwd"};
+	unsigned int		i;
 
-	if (node == NULL || node->command == NULL | node->command->args == NULL ||
-			node->command->args->word == NULL)
+	if (node == NULL || node->command == NULL | node->command->args == NULL
+		|| node->command->args->word == NULL)
 		return (false);
 	cmd_name = node->command->args->word;
 	i = 0;
