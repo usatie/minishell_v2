@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:29 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:29 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 12:51:19 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,39 @@
 #include <string.h>
 
 // name, value 
+static void	item_update(t_item *item, const char *value)
+{
+	free(item->value);
+	if (value == NULL)
+		item->value = NULL;
+	else
+	{
+		item->value = strdup(value);
+		if (item->value == NULL)
+			fatal_error("map_set strdup");
+	}
+}
+
+static void	map_insert(t_map *map, const char *name, const char *value)
+{
+	t_item	*item;
+
+	if (value == NULL)
+	{
+		item = item_new(strdup(name), NULL, 0);
+		if (item->name == NULL)
+			fatal_error("strdup");
+	}
+	else
+	{
+		item = item_new(strdup(name), strdup(value), 0);
+		if (item->name == NULL || item->value == NULL)
+			fatal_error("strdup");
+	}
+	item->next = map->item_head.next;
+	map->item_head.next = item;
+}
+
 int	map_set(t_map *map, const char *name, const char *value)
 {
 	t_item	*cur;
@@ -25,35 +58,10 @@ int	map_set(t_map *map, const char *name, const char *value)
 	cur = map_get(map, name);
 	// found
 	if (cur)
-	{
-		free(cur->value);
-		if (value == NULL)
-			cur->value = NULL;
-		else
-		{
-			cur->value = strdup(value);
-			if (cur->value == NULL)
-				fatal_error("map_set strdup");
-		}
-	}
+		item_update(cur, value);
 	// not found
 	else
-	{
-		if (value == NULL)
-		{
-			cur = item_new(strdup(name), NULL, 0);
-			if (cur->name == NULL)
-				fatal_error("strdup");
-		}
-		else
-		{
-			cur = item_new(strdup(name), strdup(value), 0);
-			if (cur->name == NULL || cur->value == NULL)
-				fatal_error("strdup");
-		}
-		cur->next = map->item_head.next;
-		map->item_head.next = cur;
-	}
+		map_insert(map, name, value);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:33 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:33 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 13:19:09 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,38 +29,47 @@ char	*search_path(const char *filename)
 	return (path);
 }
 
+static void	set_path(char *path, size_t pathsize,
+	const char *filename, char **envpath)
+{
+	char	*end;
+
+	bzero(path, pathsize);
+	end = strchr(*envpath, ':');
+	if (*envpath == end)
+		strlcpy(path, ".", pathsize);
+	else if (end)
+		strncpy(path, *envpath, end - *envpath);
+	else
+		strlcpy(path, *envpath, pathsize);
+	strlcat(path, "/", pathsize);
+	strlcat(path, filename, pathsize);
+	if (end == NULL)
+		*envpath = NULL;
+	else
+		*envpath = end + 1;
+}
+
 static char	*search_path_mode(const char *filename, int mode)
 {
 	char	path[PATH_MAX];
-	char	*value;
-	char	*end;
+	char	*envpath;
+	char	*dup;
 
-	value = xgetenv("PATH");
-	while (*value)
+	envpath = xgetenv("PATH");
+	while (envpath && *envpath)
 	{
+		set_path(path, PATH_MAX, filename, &envpath);
 		// /bin:/usr/bin
 		//     ^
 		//     end
-		bzero(path, PATH_MAX);
-		end = strchr(value, ':');
-		if (end)
-			strncpy(path, value, end - value);
-		else
-			strlcpy(path, value, PATH_MAX);
-		strlcat(path, "/", PATH_MAX);
-		strlcat(path, filename, PATH_MAX);
 		if (access(path, mode) == 0)
 		{
-			char	*dup;
-
 			dup = strdup(path);
 			if (dup == NULL)
 				fatal_error("strdup");
 			return (dup);
 		}
-		if (end == NULL)
-			return (NULL);
-		value = end + 1;
 	}
 	return (NULL);
 }

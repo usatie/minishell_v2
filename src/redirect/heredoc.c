@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 11:15:32 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 12:39:30 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,17 @@
 	   allows here-documents within shell scripts to be indented in a natural
 	   fashion.
 */
-int	read_heredoc(const char *delimiter, bool is_delim_unquoted)
+
+static void	readline_heredoc_loop(int pfd[2], const char *delimiter,
+		bool is_delim_unquoted)
 {
 	char	*line;
-	int		pfd[2];
 
-	if (pipe(pfd) < 0)
-		fatal_error("pipe");
-	g_ctx.readline_interrupted = false;
 	while (1)
 	{
 		line = readline("> ");
-		if (line == NULL)
-			break ;
-		if (g_ctx.readline_interrupted)
-		{
-			free(line);
-			break ;
-		}
-		if (strcmp(line, delimiter) == 0)
+		if (line == NULL || g_ctx.readline_interrupted
+			|| strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;
@@ -73,6 +65,16 @@ int	read_heredoc(const char *delimiter, bool is_delim_unquoted)
 		dprintf(pfd[1], "%s\n", line);
 		free(line);
 	}
+}
+
+int	read_heredoc(const char *delimiter, bool is_delim_unquoted)
+{
+	int		pfd[2];
+
+	if (pipe(pfd) < 0)
+		fatal_error("pipe");
+	g_ctx.readline_interrupted = false;
+	readline_heredoc_loop(pfd, delimiter, is_delim_unquoted);
 	close(pfd[1]);
 	if (g_ctx.readline_interrupted)
 	{

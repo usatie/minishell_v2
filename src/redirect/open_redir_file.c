@@ -6,12 +6,27 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:49 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 10:48:49 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/05 13:17:27 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "minishell.h"
+
+static int	openfd(t_node *node)
+{
+	if (node->kind == ND_REDIR_OUT)
+		return (open(node->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644));
+	else if (node->kind == ND_REDIR_IN)
+		return (open(node->filename->word, O_RDONLY));
+	else if (node->kind == ND_REDIR_APPEND)
+		return (open(node->filename->word,
+				O_CREAT | O_WRONLY | O_APPEND, 0644));
+	else if (node->kind == ND_REDIR_HEREDOC)
+		return (read_heredoc(node->delimiter->word, node->is_delim_unquoted));
+	else
+		assert_error("open_redir_file");
+}
 
 int	open_redir_file(t_node *node)
 {
@@ -27,19 +42,7 @@ int	open_redir_file(t_node *node)
 	}
 	else if (node->kind == ND_SIMPLE_CMD)
 		return (open_redir_file(node->redirects));
-	else if (node->kind == ND_REDIR_OUT)
-		node->filefd = open(node->filename->word,
-				O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	else if (node->kind == ND_REDIR_IN)
-		node->filefd = open(node->filename->word, O_RDONLY);
-	else if (node->kind == ND_REDIR_APPEND)
-		node->filefd = open(node->filename->word,
-				O_CREAT | O_WRONLY | O_APPEND, 0644);
-	else if (node->kind == ND_REDIR_HEREDOC)
-		node->filefd = read_heredoc(node->delimiter->word,
-				node->is_delim_unquoted);
-	else
-		assert_error("open_redir_file");
+	node->filefd = openfd(node);
 	if (node->filefd < 0)
 	{
 		if (node->kind == ND_REDIR_OUT || node->kind == ND_REDIR_APPEND
