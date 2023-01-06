@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:57:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 22:03:13 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 23:29:30 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,28 @@ bool	consume_ifs(char **rest, char *line)
 	return (false);
 }
 
+static void	trim_ifs(char **rest, char *p)
+{
+	char	*last_ifs;
+
+	if (is_ifs(*p) && is_default_ifs(*p))
+		consume_ifs(&p, p);
+	*rest = p;
+	last_ifs = NULL;
+	while (*p)
+	{
+		if (is_ifs(*p) && is_default_ifs(*p))
+		{
+			last_ifs = p;
+			consume_ifs(&p, p);
+		}
+		else
+			p++;
+	}
+	if (last_ifs && is_ifs(p[-1]) && is_default_ifs(p[-1]))
+		*last_ifs = '\0';
+}
+
 static void	expand_word_splitting_tok(t_token *tok)
 {
 	char	*new_word;
@@ -100,6 +122,7 @@ static void	expand_word_splitting_tok(t_token *tok)
 	new_word = ft_calloc(1, sizeof(char));
 	if (new_word == NULL)
 		fatal_error("ft_calloc");
+	trim_ifs(&p, p);
 	while (*p)
 	{
 		if (*p == SINGLE_QUOTE_CHAR)
@@ -107,7 +130,10 @@ static void	expand_word_splitting_tok(t_token *tok)
 		else if (*p == DOUBLE_QUOTE_CHAR)
 			append_double_quote(&new_word, &p, p);
 		else if (consume_ifs(&p, p))
-			insert_new_tok(&new_word, &tok, tok);
+		{
+			if (*p)
+				insert_new_tok(&new_word, &tok, tok);
+		}
 		else
 			append_char(&new_word, *p++);
 	}

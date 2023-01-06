@@ -218,6 +218,10 @@ assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho $FOO"world"'
 assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho hello$FOO"world"'
 assert 'export IFS="abc"\nexport FOO="echoaaaaaxabcabcy"\n$FOO'
 
+assert 'export IFS="a"\nexport FOO="aaahelloaaaworldaaa"\necho $FOO'
+assert 'export IFS="a "\nexport FOO="   hello   world   "\necho $FOO'
+assert 'export IFS="a "\nexport FOO=" a a hello a a world a a "\necho $FOO'
+
 # Signal handling
 echo "int main() { while (1) ; }" | gcc -xc -o infinite_loop -
 
