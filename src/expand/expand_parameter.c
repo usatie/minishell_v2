@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 22:28:11 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 20:11:43 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ PARAMETERS
 	   to the variable's value.
 */
 
-static void	append_single_quote(char **dst, char **rest, char *p)
+void	append_single_quote(char **dst, char **rest, char *p)
 {
 	if (*p == SINGLE_QUOTE_CHAR)
 	{
@@ -72,7 +72,7 @@ static void	append_single_quote(char **dst, char **rest, char *p)
 		assert_error("Expected single quote");
 }
 
-static void	append_double_quote(char **dst, char **rest, char *p)
+void	append_double_quote(char **dst, char **rest, char *p)
 {
 	if (*p == DOUBLE_QUOTE_CHAR)
 	{

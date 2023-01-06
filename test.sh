@@ -193,6 +193,15 @@ assert 'invalid\necho $?\necho $?'
 assert 'exit42\necho $?\necho $?'
 assert 'exit42\n\necho $?\necho $?'
 
+# Word Splitting
+assert 'export FOO="echo hello"\n$FOO'
+assert 'export TEST="cho -n"\ne$TEST'
+assert 'export FOO="a       b"\necho $FOO'
+assert 'export FOO="a       b"\necho hello$FOO'
+assert 'export FOO="a       b"\necho $FOO"world"'
+assert 'export FOO="a       b"\necho hello$FOO"world"'
+assert 'export FOO="echo a      b"\n$FOO'
+
 # Signal handling
 echo "int main() { while (1) ; }" | gcc -xc -o infinite_loop -
 

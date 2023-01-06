@@ -23,6 +23,7 @@ SRCS     = src/main.c\
            src/expand/expand_heredoc.c\
            src/expand/expand_quote_removal.c\
            src/expand/expand_parameter.c\
+           src/expand/word_split.c\
            src/expand/variable.c\
            src/expand/special_parameter.c\
 		   src/parse/parse.c\
