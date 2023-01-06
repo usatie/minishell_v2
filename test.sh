@@ -202,6 +202,22 @@ assert 'export FOO="a       b"\necho $FOO"world"'
 assert 'export FOO="a       b"\necho hello$FOO"world"'
 assert 'export FOO="echo a      b"\n$FOO'
 
+assert 'export IFS=""\nexport FOO="echo hello"\n$FOO'
+assert 'export IFS=""\nexport TEST="cho -n"\ne$TEST'
+assert 'export IFS=""\nexport FOO="a       b"\necho $FOO'
+assert 'export IFS=""\nexport FOO="a       b"\necho hello$FOO'
+assert 'export IFS=""\nexport FOO="a       b"\necho $FOO"world"'
+assert 'export IFS=""\nexport FOO="a       b"\necho hello$FOO"world"'
+assert 'export IFS=""\nexport FOO="echo a      b"\n$FOO'
+
+assert 'export IFS="abc"\nexport FOO="echoahellobbbbbbworldccc"\n$FOO'
+assert 'export IFS="abc"\nexport TEST="choa-n"\ne$TEST'
+assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho $FOO'
+assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho hello$FOO'
+assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho $FOO"world"'
+assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho hello$FOO"world"'
+assert 'export IFS="abc"\nexport FOO="echoaaaaaxabcabcy"\n$FOO'
+
 # Signal handling
 echo "int main() { while (1) ; }" | gcc -xc -o infinite_loop -
 

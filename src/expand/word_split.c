@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:57:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 20:11:01 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 22:03:13 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,37 @@ static void	insert_new_tok(char **new_word, t_token **rest, t_token *tok)
 	*rest = tok->next;
 }
 
+bool	is_default_ifs(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n');
+}
+
+bool	is_ifs(char c)
+{
+	char	*ifs;
+
+	ifs = xgetenv("IFS");
+	if (ifs == NULL)
+		return (is_default_ifs(c));
+	if (c == '\0')
+		return (false);
+	return (ft_strchr(ifs, c) != NULL);
+}
+
+bool	consume_ifs(char **rest, char *line)
+{
+	if (is_ifs(*line))
+	{
+		line++;
+		while (*line && is_ifs(*line) && is_default_ifs(*line))
+			line++;
+		*rest = line;
+		return (true);
+	}
+	*rest = line;
+	return (false);
+}
+
 static void	expand_word_splitting_tok(t_token *tok)
 {
 	char	*new_word;
@@ -62,6 +93,8 @@ static void	expand_word_splitting_tok(t_token *tok)
 
 	if (tok == NULL || tok->kind != TK_WORD || tok->word == NULL)
 		return ;
+	if (!tok->is_expanded)
+		return (expand_word_splitting_tok(tok->next));
 	to_free = tok->word;
 	p = tok->word;
 	new_word = ft_calloc(1, sizeof(char));
@@ -73,7 +106,7 @@ static void	expand_word_splitting_tok(t_token *tok)
 			append_single_quote(&new_word, &p, p);
 		else if (*p == DOUBLE_QUOTE_CHAR)
 			append_double_quote(&new_word, &p, p);
-		else if (consume_blank(&p, p))
+		else if (consume_ifs(&p, p))
 			insert_new_tok(&new_word, &tok, tok);
 		else
 			append_char(&new_word, *p++);

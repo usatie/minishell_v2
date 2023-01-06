@@ -113,7 +113,10 @@ void	expand_parameter_tok(t_token *tok)
 		else if (*p == DOUBLE_QUOTE_CHAR)
 			append_double_quote(&new_word, &p, p);
 		else if (is_variable(p))
+		{
 			expand_variable_str(&new_word, &p, p);
+			tok->is_expanded = true;
+		}
 		else if (is_special_parameter(p))
 			expand_special_parameter_str(&new_word, &p, p);
 		else

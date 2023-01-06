@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 20:11:40 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 21:30:15 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ struct s_token {
 	char			*word;
 	t_token_kind	kind;
 	t_token			*next;
+	bool			is_expanded;
 };
 
 struct s_node {
