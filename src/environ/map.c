@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:24 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:52:09 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 16:57:36 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_map	*map_new(void)
 {
 	t_map	*map;
 
-	map = calloc(1, sizeof(*map));
+	map = ft_calloc(1, sizeof(*map));
 	if (map == NULL)
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	return (map);
 }
 
