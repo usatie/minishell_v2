@@ -6,15 +6,13 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:33 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:49:56 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 08:13:02 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include <unistd.h>
 #include "minishell.h"
-
-#include <string.h>
 
 static char	*search_path_mode(const char *filename, int mode);
 
@@ -32,18 +30,25 @@ char	*search_path(const char *filename)
 static void	set_path(char *path, size_t pathsize,
 	const char *filename, char **envpath)
 {
+	size_t	len;
+	char	buf[PATH_MAX];
 	char	*end;
 
 	ft_bzero(path, pathsize);
 	end = ft_strchr(*envpath, ':');
 	if (*envpath == end)
-		strncpy(path, ".", pathsize);
+		len = ft_strlcpy(path, ".", pathsize);
 	else if (end)
-		strncpy(path, *envpath, end - *envpath);
+	{
+		len = ft_strlcpy(buf, *envpath, end - *envpath + 1);
+		ft_strlcpy(path, buf, pathsize);
+	}
 	else
-		ft_strlcpy(path, *envpath, pathsize);
-	ft_strlcat(path, "/", pathsize);
-	ft_strlcat(path, filename, pathsize);
+		len = ft_strlcpy(path, *envpath, pathsize);
+	len += ft_strlcat(path, "/", pathsize);
+	len += ft_strlcat(path, filename, pathsize);
+	if (len > pathsize - 1)
+		path[0] = '\0';
 	if (end == NULL)
 		*envpath = NULL;
 	else

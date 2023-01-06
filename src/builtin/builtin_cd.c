@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:55:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:47:35 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 08:10:11 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*resolve_pwd(char *oldpwd, char *path)
 		else if (consume_path(&path, path, ".."))
 			delete_last_path_elm(newpwd);
 		else
-			append_path_elm(newpwd, &path, path);
+			append_path_elm(newpwd, PATH_MAX, &path, path);
 	}
 	dup = ft_strdup(newpwd);
 	if (dup == NULL)

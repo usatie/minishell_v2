@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:42:50 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 08:10:27 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ int		builtin_cd(char **argv);
 // filepath.c
 bool	consume_path(char **rest, char *path, char *elm);
 void	delete_last_path_elm(char *path);
-void	append_path_elm(char *dst, char **rest, char *src);
+void	append_path_elm(char *dst, size_t dstsize, char **rest, char *src);
 
 // builtin_echo.c
 int		builtin_echo(char **argv);
