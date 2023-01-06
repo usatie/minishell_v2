@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:37 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 22:28:20 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 21:16:50 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	remove_quote(t_token *tok)
 	new_word = ft_calloc(1, sizeof(char));
 	if (new_word == NULL)
 		fatal_error("ft_calloc");
-	while (*p && !is_metacharacter(*p))
+	while (*p)
 	{
 		if (*p == SINGLE_QUOTE_CHAR)
 			remove_single_quote(&new_word, &p, p);

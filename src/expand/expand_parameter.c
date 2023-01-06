@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 20:11:43 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 21:30:37 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	expand_parameter_tok(t_token *tok)
 	new_word = ft_calloc(1, sizeof(char));
 	if (new_word == NULL)
 		fatal_error("ft_calloc");
-	while (*p && !is_metacharacter(*p))
+	while (*p)
 	{
 		if (*p == SINGLE_QUOTE_CHAR)
 			append_single_quote(&new_word, &p, p);
