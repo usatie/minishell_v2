@@ -6,22 +6,42 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:50 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:50 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/06 17:10:58 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
 #include "minishell.h"
 
-#include <fcntl.h>
+static bool	is_valid_fd(int fd)
+{
+	struct stat	st;
+
+	if (fd < 0)
+		return (false);
+	errno = 0;
+	if (fstat(fd, &st) < 0 && errno == EBADF)
+		return (false);
+	return (true);
+}
 
 int	stashfd(int fd)
 {
 	int	stashfd;
 
-	stashfd = fcntl(fd, F_DUPFD, 10);
+	if (!is_valid_fd(fd))
+	{
+		errno = EBADF;
+		return (-1);
+	}
+	stashfd = 10;
+	while (is_valid_fd(stashfd))
+		stashfd++;
+	stashfd = dup2(fd, stashfd);
 	if (stashfd < 0)
-		fatal_error("fcntl");
+		fatal_error("dup2");
 	if (close(fd) < 0)
 		fatal_error("close");
 	return (stashfd);
