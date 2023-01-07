@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:23 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 22:26:55 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/07 12:49:49 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,6 @@ static void	envmap_init(t_map *map, char **ep)
 	}
 	map_unset(map, "OLDPWD");
 	map_set_attr(map, "OLDPWD", NULL, ATTR_EXPORT);
+	map_unset(map, "IFS");
+	map_set_attr(map, "IFS", " \t\n", 0);
 }

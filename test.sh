@@ -184,9 +184,12 @@ assert 'cat <<E"O"F\nhello\nworld\nEOF\nNOPRINT'
 assert 'cat <<EOF   \n$USER\n$NO_SUCH_VAR\n$FOO$BAR\nEOF'
 assert 'cat <<"EOF" \n$USER\n$NO_SUCH_VAR\n$FOO$BAR\nEOF'
 assert 'cat <<EO"F" \n$USER\n$NO_SUCH_VAR\n$FOO$BAR\nEOF'
-export EOF="eof"
-assert 'cat <<$EOF         \neof\n$EOF\nEOF'
-assert 'cat <<"$EOF"       \neof\n$EOF\nEOF'
+(
+	print_desc 'export EOF="eof"'
+	export EOF="eof"
+	assert 'cat <<$EOF         \neof\n$EOF\nEOF'
+	assert 'cat <<"$EOF"       \neof\n$EOF\nEOF'
+)
 
 # Pipe
 assert 'cat Makefile | grep minishell'
@@ -250,6 +253,15 @@ assert 'export IFS=" :"\nexport FOO="hello: : :world"\n./print_args $FOO'
 assert 'export IFS=" :"\nexport FOO="hello : : :world"\n./print_args $FOO'
 assert 'export IFS=" :"\nexport FOO="hello: : : world"\n./print_args $FOO'
 assert 'export IFS=" :"\nexport FOO="hello : : : world"\n./print_args $FOO'
+
+assert 'echo "$IFS"'
+
+print_desc 'export IFS=":"'
+(
+	export IFS=":"
+	assert 'echo "$IFS"'
+	assert 'export FOO="hello:world:42Tokyo"\n./print_args $FOO'
+)
 
 # Signal handling
 echo "int main() { while (1) ; }" | gcc -xc -o infinite_loop -
@@ -348,16 +360,19 @@ assert 'export nosuch hoge=nosuch [invalid]\n export | grep nosuch | sort'
 assert 'export nosuch="nosuch2=hoge"\nexport $nosuch\n export | grep nosuch | sort'
 
 ## unset
-export hoge fuga=fuga
-assert 'unset'
-assert 'unset hoge'
-assert 'unset fuga'
-assert 'unset nosuch'
-assert 'unset [invalid]'
-assert 'unset hoge fuga'
-assert 'unset hoge nosuch fuga'
-assert 'unset fuga \n export | echo $fuga'
-assert 'unset [invalid] fuga \n echo $fuga'
+(
+	print_desc 'export hoge fuga=fuga'
+	export hoge fuga=fuga
+	assert 'unset'
+	assert 'unset hoge'
+	assert 'unset fuga'
+	assert 'unset nosuch'
+	assert 'unset [invalid]'
+	assert 'unset hoge fuga'
+	assert 'unset hoge nosuch fuga'
+	assert 'unset fuga \n export | echo $fuga'
+	assert 'unset [invalid] fuga \n echo $fuga'
+)
 
 ## env
 print_desc "Output of 'env' differs, but it's ok."
