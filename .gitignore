@@ -1,5 +1,7 @@
 # Executables
 minishell
+error.log
+tmp*
 
 # Prerequisites
 *.d

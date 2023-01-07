@@ -15,7 +15,7 @@ cat <<EOF | gcc -xc -o print_args -
 #include <stdio.h>
 int main(int argc, char *argv[]) {
 	for (int i = 0; argv[i]; i++)
-		printf("argv[%d] = %s\n", i, argv[i]);
+		printf("argv[%d] = [%s]\n", i, argv[i]);
 }
 EOF
 
@@ -34,7 +34,7 @@ cleanup() {
 assert() {
 	COMMAND="$1"
 	shift
-	printf '%-60s:' "[$COMMAND]"
+	printf '%-70s:' "[$COMMAND]"
 	# exit status
 	echo -n -e "$COMMAND" | bash >cmp 2>&-
 	expected=$?
@@ -49,12 +49,20 @@ assert() {
 		mv "$arg" "$arg"".out"
 	done
 
-	diff cmp out >/dev/null && echo -e -n "  diff $OK" || echo -e -n "  diff $NG"
+	if diff out cmp > /dev/null; then
+		echo -e -n "  diff $OK"
+	else
+		echo -e -n "  diff $NG"
+		printf '%-70s:\n' "[$COMMAND]" >> error.log
+		diff -U 1 out cmp >>error.log
+	fi
 
 	if [ "$actual" = "$expected" ]; then
 		echo -e -n "  status $OK"
 	else
 		echo -e -n "  status $NG, expected $expected but got $actual"
+		printf '%-70s:' "[$COMMAND]" >>error.log
+		echo "status NG, expected $expected but got $actual" >>error.log
 	fi
 	for arg in "$@"
 	do
@@ -64,6 +72,8 @@ assert() {
 	done
 	echo
 }
+
+rm -f error.log
 
 # Empty line (EOF)
 assert ''
@@ -204,23 +214,42 @@ assert 'export FOO="echo a      b"\n$FOO'
 
 assert 'export IFS=""\nexport FOO="echo hello"\n$FOO'
 assert 'export IFS=""\nexport TEST="cho -n"\ne$TEST'
-assert 'export IFS=""\nexport FOO="a       b"\necho $FOO'
-assert 'export IFS=""\nexport FOO="a       b"\necho hello$FOO'
-assert 'export IFS=""\nexport FOO="a       b"\necho $FOO"world"'
-assert 'export IFS=""\nexport FOO="a       b"\necho hello$FOO"world"'
-assert 'export IFS=""\nexport FOO="echo a      b"\n$FOO'
+assert 'export IFS=""\nexport FOO="a       b"\n./print_args $FOO'
+assert 'export IFS=""\nexport FOO="a       b"\n./print_args hello$FOO'
+assert 'export IFS=""\nexport FOO="a       b"\n./print_args $FOO"world"'
+assert 'export IFS=""\nexport FOO="a       b"\n./print_args hello$FOO"world"'
+assert 'export IFS=""\nexport FOO="./print_args a      b"\n$FOO'
 
-assert 'export IFS="abc"\nexport FOO="echoahellobbbbbbworldccc"\n$FOO'
+assert 'export IFS="abc"\nexport FOO="./print_argsahellobbbbbbworldccc"\n$FOO'
 assert 'export IFS="abc"\nexport TEST="choa-n"\ne$TEST'
-assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho $FOO'
-assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho hello$FOO'
-assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho $FOO"world"'
-assert 'export IFS="abc"\nexport FOO="xabcabcy"\necho hello$FOO"world"'
-assert 'export IFS="abc"\nexport FOO="echoaaaaaxabcabcy"\n$FOO'
+assert 'export IFS="abc"\nexport FOO="xabcabcy"\n./print_args $FOO'
+assert 'export IFS="abc"\nexport FOO="xabcabcy"\n./print_args hello$FOO'
+assert 'export IFS="abc"\nexport FOO="xabcabcy"\n./print_args $FOO"world"'
+assert 'export IFS="abc"\nexport FOO="xabcabcy"\n./print_args hello$FOO"world"'
+assert 'export IFS="abc"\nexport FOO="./print_argsaaaaaxabcabcy"\n$FOO'
 
-assert 'export IFS="a"\nexport FOO="aaahelloaaaworldaaa"\necho $FOO'
-assert 'export IFS="a "\nexport FOO="   hello   world   "\necho $FOO'
-assert 'export IFS="a "\nexport FOO=" a a hello a a world a a "\necho $FOO'
+assert 'export IFS="a"\nexport FOO="aaahelloaaaworldaaa"\n./print_args $FOO'
+assert 'export IFS="a "\nexport FOO="   hello   world   "\n./print_args $FOO'
+assert 'export IFS="a "\nexport FOO=" a a hello a a world a a "\n./print_args $FOO'
+assert 'export IFS="a "\nexport FOO="aaa"\n./print_args $FOO'
+assert 'export IFS="a "\nexport FOO="helloaaa"\n./print_args $FOO'
+assert 'export IFS="a "\nexport FOO="helloaaaworld"\n./print_args $FOO'
+assert 'export IFS="a "\nexport FOO="aaahelloaaaworldaaa"\n./print_args $FOO'
+
+assert 'export IFS=" :"\nexport FOO="hello: : :"\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO="hello: : : "\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO="hello : : :"\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO="hello : : : "\n./print_args $FOO'
+
+assert 'export IFS=" :"\nexport FOO=": : :hello: : :"\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO=": : : hello: : : "\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO=" : : :hello : : :"\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO=" : : : hello : : : "\n./print_args $FOO'
+
+assert 'export IFS=" :"\nexport FOO="hello: : :world"\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO="hello : : :world"\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO="hello: : : world"\n./print_args $FOO'
+assert 'export IFS=" :"\nexport FOO="hello : : : world"\n./print_args $FOO'
 
 # Signal handling
 echo "int main() { while (1) ; }" | gcc -xc -o infinite_loop -
@@ -385,5 +414,8 @@ assert 'unset PWD\ncd\necho $OLDPWD\ncd /tmp\necho $OLDPWD'
 assert 'unset PWD\ncd\nexport|grep PWD\ncd /tmp\nexport|grep PWD'
 assert 'unset PWD\ncd\nenv|grep PWD\ncd /tmp\nenv|grep PWD'
 
-
 cleanup
+
+if [ -f error.log ]; then
+	echo -e $RED"Some tests have failed. Please review the error.log for more information."$RESET
+fi

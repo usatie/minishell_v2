@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:57:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 23:29:30 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/07 12:43:09 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,28 @@ bool	is_ifs(char c)
 	return (ft_strchr(ifs, c) != NULL);
 }
 
+bool	consume_default_ifs(char **rest, char *p)
+{
+	bool	consumed;
+
+	consumed = false;
+	while (*p && is_ifs(*p) && is_default_ifs(*p))
+	{
+		consumed = true;
+		p++;
+	}
+	*rest = p;
+	return (consumed);
+}
+
 bool	consume_ifs(char **rest, char *line)
 {
 	if (is_ifs(*line))
 	{
-		line++;
-		while (*line && is_ifs(*line) && is_default_ifs(*line))
+		consume_default_ifs(&line, line);
+		if (is_ifs(*line))
 			line++;
-		*rest = line;
+		consume_default_ifs(rest, line);
 		return (true);
 	}
 	*rest = line;
@@ -87,42 +101,34 @@ bool	consume_ifs(char **rest, char *line)
 
 static void	trim_ifs(char **rest, char *p)
 {
-	char	*last_ifs;
+	char	*last;
 
-	if (is_ifs(*p) && is_default_ifs(*p))
-		consume_ifs(&p, p);
+	consume_default_ifs(&p, p);
 	*rest = p;
-	last_ifs = NULL;
+	last = NULL;
 	while (*p)
 	{
-		if (is_ifs(*p) && is_default_ifs(*p))
-		{
-			last_ifs = p;
-			consume_ifs(&p, p);
-		}
+		last = p;
+		if (consume_default_ifs(&p, p))
+			;
 		else
 			p++;
 	}
-	if (last_ifs && is_ifs(p[-1]) && is_default_ifs(p[-1]))
-		*last_ifs = '\0';
+	if (last && is_ifs(*last) && is_default_ifs(*last))
+		*last = '\0';
 }
 
-static void	expand_word_splitting_tok(t_token *tok)
+static void	word_split(t_token *tok)
 {
 	char	*new_word;
 	char	*to_free;
 	char	*p;
 
-	if (tok == NULL || tok->kind != TK_WORD || tok->word == NULL)
-		return ;
-	if (!tok->is_expanded)
-		return (expand_word_splitting_tok(tok->next));
 	to_free = tok->word;
-	p = tok->word;
+	trim_ifs(&p, tok->word);
 	new_word = ft_calloc(1, sizeof(char));
 	if (new_word == NULL)
 		fatal_error("ft_calloc");
-	trim_ifs(&p, p);
 	while (*p)
 	{
 		if (*p == SINGLE_QUOTE_CHAR)
@@ -139,6 +145,15 @@ static void	expand_word_splitting_tok(t_token *tok)
 	}
 	tok->word = new_word;
 	free(to_free);
+}
+
+static void	expand_word_splitting_tok(t_token *tok)
+{
+	if (tok == NULL || tok->kind != TK_WORD || tok->word == NULL)
+		return ;
+	if (!tok->is_expanded)
+		return (expand_word_splitting_tok(tok->next));
+	word_split(tok);
 	expand_word_splitting_tok(tok->next);
 }
 
