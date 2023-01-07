@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 09:17:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 21:30:15 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/07 18:19:43 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,15 @@ void	expand_quote_removal(t_node *node);
 void	expand_parameter(t_node *node);
 void	append_single_quote(char **dst, char **rest, char *p);
 void	append_double_quote(char **dst, char **rest, char *p);
-// expand/word_split.c
+// expand/expand_word_splitting.c
 void	expand_word_splitting(t_node *node);
+// expand/ifs.c
+bool	is_default_ifs(char c);
+bool	is_ifs(char c);
+bool	consume_default_ifs(char **rest, char *p);
+bool	consume_ifs(char **rest, char *line);
+void	trim_ifs(char **rest, char *p);
+
 // expand/variable.c
 bool	is_variable(char *s);
 void	expand_variable_str(char **dst, char **rest, char *p);

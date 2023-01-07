@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:57:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/07 12:43:09 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/07 18:18:07 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,84 +38,29 @@
 
 	   Note that if no expansion occurs, no splitting is performed.
 */
-static void	expand_word_splitting_tok(t_token *tok);
+static void	insert_new_tok(char **new_word, t_token **rest, t_token *tok);
+static void	expand_word_splitting_tok(t_token *tok);;
+static void	word_split(t_token *tok);
 
-static void	insert_new_tok(char **new_word, t_token **rest, t_token *tok)
+void	expand_word_splitting(t_node *node)
 {
-	t_token	*new_tok;
-
-	tok->word = *new_word;
-	*new_word = ft_calloc(1, sizeof(char));
-	if (*new_word == NULL)
-		fatal_error("ft_calloc");
-	new_tok = new_token(NULL, TK_WORD);
-	new_tok->next = tok->next;
-	tok->next = new_tok;
-	*rest = tok->next;
+	if (node == NULL)
+		return ;
+	expand_word_splitting_tok(node->args);
+	expand_word_splitting_tok(node->filename);
+	expand_word_splitting(node->redirects);
+	expand_word_splitting(node->command);
+	expand_word_splitting(node->next);
 }
 
-bool	is_default_ifs(char c)
+static void	expand_word_splitting_tok(t_token *tok)
 {
-	return (c == ' ' || c == '\t' || c == '\n');
-}
-
-bool	is_ifs(char c)
-{
-	char	*ifs;
-
-	ifs = xgetenv("IFS");
-	if (ifs == NULL)
-		return (is_default_ifs(c));
-	if (c == '\0')
-		return (false);
-	return (ft_strchr(ifs, c) != NULL);
-}
-
-bool	consume_default_ifs(char **rest, char *p)
-{
-	bool	consumed;
-
-	consumed = false;
-	while (*p && is_ifs(*p) && is_default_ifs(*p))
-	{
-		consumed = true;
-		p++;
-	}
-	*rest = p;
-	return (consumed);
-}
-
-bool	consume_ifs(char **rest, char *line)
-{
-	if (is_ifs(*line))
-	{
-		consume_default_ifs(&line, line);
-		if (is_ifs(*line))
-			line++;
-		consume_default_ifs(rest, line);
-		return (true);
-	}
-	*rest = line;
-	return (false);
-}
-
-static void	trim_ifs(char **rest, char *p)
-{
-	char	*last;
-
-	consume_default_ifs(&p, p);
-	*rest = p;
-	last = NULL;
-	while (*p)
-	{
-		last = p;
-		if (consume_default_ifs(&p, p))
-			;
-		else
-			p++;
-	}
-	if (last && is_ifs(*last) && is_default_ifs(*last))
-		*last = '\0';
+	if (tok == NULL || tok->kind != TK_WORD || tok->word == NULL)
+		return ;
+	if (!tok->is_expanded)
+		return (expand_word_splitting_tok(tok->next));
+	word_split(tok);
+	expand_word_splitting_tok(tok->next);
 }
 
 static void	word_split(t_token *tok)
@@ -147,23 +92,16 @@ static void	word_split(t_token *tok)
 	free(to_free);
 }
 
-static void	expand_word_splitting_tok(t_token *tok)
+static void	insert_new_tok(char **new_word, t_token **rest, t_token *tok)
 {
-	if (tok == NULL || tok->kind != TK_WORD || tok->word == NULL)
-		return ;
-	if (!tok->is_expanded)
-		return (expand_word_splitting_tok(tok->next));
-	word_split(tok);
-	expand_word_splitting_tok(tok->next);
-}
+	t_token	*new_tok;
 
-void	expand_word_splitting(t_node *node)
-{
-	if (node == NULL)
-		return ;
-	expand_word_splitting_tok(node->args);
-	expand_word_splitting_tok(node->filename);
-	expand_word_splitting(node->redirects);
-	expand_word_splitting(node->command);
-	expand_word_splitting(node->next);
+	tok->word = *new_word;
+	*new_word = ft_calloc(1, sizeof(char));
+	if (*new_word == NULL)
+		fatal_error("ft_calloc");
+	new_tok = new_token(NULL, TK_WORD);
+	new_tok->next = tok->next;
+	tok->next = new_tok;
+	*rest = tok->next;
 }
