@@ -6,11 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:29 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:43:37 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 21:51:16 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "xlib.h"
 #include "minishell.h"
 
 // name, value 
@@ -20,11 +21,7 @@ static void	item_update(t_item *item, const char *value)
 	if (value == NULL)
 		item->value = NULL;
 	else
-	{
-		item->value = ft_strdup(value);
-		if (item->value == NULL)
-			fatal_error("map_set ft_strdup");
-	}
+		item->value = xstrdup(value);
 }
 
 static void	map_insert(t_map *map, const char *name, const char *value)
@@ -32,17 +29,9 @@ static void	map_insert(t_map *map, const char *name, const char *value)
 	t_item	*item;
 
 	if (value == NULL)
-	{
-		item = item_new(ft_strdup(name), NULL, 0);
-		if (item->name == NULL)
-			fatal_error("ft_strdup");
-	}
+		item = item_new(xstrdup(name), NULL, 0);
 	else
-	{
-		item = item_new(ft_strdup(name), ft_strdup(value), 0);
-		if (item->name == NULL || item->value == NULL)
-			fatal_error("ft_strdup");
-	}
+		item = item_new(xstrdup(name), xstrdup(value), 0);
 	item->next = map->item_head.next;
 	map->item_head.next = item;
 }

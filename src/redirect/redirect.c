@@ -6,11 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:49 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 08:56:50 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 22:00:34 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include "xlib.h"
 #include "minishell.h"
 
 bool	is_redirect(t_node *node)
@@ -33,7 +34,7 @@ void	do_redirect(t_node *redir)
 	if (is_redirect(redir))
 	{
 		redir->stashed_targetfd = stashfd(redir->targetfd);
-		dup2(redir->filefd, redir->targetfd);
+		xdup2(redir->filefd, redir->targetfd);
 	}
 	else
 		assert_error("do_redirect");
@@ -48,9 +49,9 @@ void	reset_redirect(t_node *redir)
 	reset_redirect(redir->next);
 	if (is_redirect(redir))
 	{
-		close(redir->filefd);
-		close(redir->targetfd);
-		dup2(redir->stashed_targetfd, redir->targetfd);
+		xclose(redir->filefd);
+		xclose(redir->targetfd);
+		xdup2(redir->stashed_targetfd, redir->targetfd);
 	}
 	else
 		assert_error("reset_redirect");

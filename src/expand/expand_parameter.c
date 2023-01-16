@@ -6,11 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 21:30:37 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 01:32:50 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "xlib.h"
 #include "minishell.h"
 
 /*
@@ -103,9 +104,7 @@ void	expand_parameter_tok(t_token *tok)
 	if (tok == NULL || tok->kind != TK_WORD || tok->word == NULL)
 		return ;
 	p = tok->word;
-	new_word = ft_calloc(1, sizeof(char));
-	if (new_word == NULL)
-		fatal_error("ft_calloc");
+	new_word = xcalloc(1, sizeof(char));
 	while (*p)
 	{
 		if (*p == SINGLE_QUOTE_CHAR)

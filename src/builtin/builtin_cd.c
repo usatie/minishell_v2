@@ -6,13 +6,14 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:55:36 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 08:10:11 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 01:36:36 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <limits.h>
 #include <unistd.h>
+#include "xlib.h"
 #include "minishell.h"
 
 static char	*resolve_pwd(char *oldpwd, char *path);
@@ -77,9 +78,7 @@ static char	*resolve_pwd(char *oldpwd, char *path)
 		else
 			append_path_elm(newpwd, PATH_MAX, &path, path);
 	}
-	dup = ft_strdup(newpwd);
-	if (dup == NULL)
-		fatal_error("ft_strdup");
+	dup = xstrdup(newpwd);
 	return (dup);
 }
 

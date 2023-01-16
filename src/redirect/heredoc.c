@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 22:27:05 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 22:00:17 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include "ft_printf.h"
+#include "xlib.h"
 #include "minishell.h"
 
 /*
@@ -70,14 +71,13 @@ int	read_heredoc(const char *delimiter, bool is_delim_unquoted)
 {
 	int		pfd[2];
 
-	if (pipe(pfd) < 0)
-		fatal_error("pipe");
+	xpipe(pfd);
 	g_ctx.readline_interrupted = false;
 	readline_heredoc_loop(pfd, delimiter, is_delim_unquoted);
-	close(pfd[1]);
+	xclose(pfd[1]);
 	if (g_ctx.readline_interrupted)
 	{
-		close(pfd[0]);
+		xclose(pfd[0]);
 		return (-1);
 	}
 	return (pfd[0]);

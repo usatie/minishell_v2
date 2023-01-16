@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   word_split.c                                       :+:      :+:    :+:   */
+/*   expand_word_splitting.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:57:48 by susami            #+#    #+#             */
-/*   Updated: 2023/01/07 18:18:07 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 01:34:36 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "xlib.h"
 #include "minishell.h"
 
 /*
@@ -71,9 +72,7 @@ static void	word_split(t_token *tok)
 
 	to_free = tok->word;
 	trim_ifs(&p, tok->word);
-	new_word = ft_calloc(1, sizeof(char));
-	if (new_word == NULL)
-		fatal_error("ft_calloc");
+	new_word = xcalloc(1, sizeof(char));
 	while (*p)
 	{
 		if (*p == SINGLE_QUOTE_CHAR)
@@ -97,9 +96,7 @@ static void	insert_new_tok(char **new_word, t_token **rest, t_token *tok)
 	t_token	*new_tok;
 
 	tok->word = *new_word;
-	*new_word = ft_calloc(1, sizeof(char));
-	if (*new_word == NULL)
-		fatal_error("ft_calloc");
+	*new_word = xcalloc(1, sizeof(char));
 	new_tok = new_token(NULL, TK_WORD);
 	new_tok->next = tok->next;
 	tok->next = new_tok;

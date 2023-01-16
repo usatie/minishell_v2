@@ -6,10 +6,11 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:54 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:44:11 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 01:37:58 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "xlib.h"
 #include "minishell.h"
 
 /*
@@ -44,9 +45,7 @@ t_token	*operator(char **rest, char *line)
 	{
 		if (startswith(line, operators[i]))
 		{
-			op = ft_strdup(operators[i]);
-			if (op == NULL)
-				fatal_error("ft_strdup");
+			op = xstrdup(operators[i]);
 			*rest = line + ft_strlen(op);
 			return (new_token(op, TK_OP));
 		}

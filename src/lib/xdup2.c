@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_heredoc.c                                   :+:      :+:    :+:   */
+/*   xdup2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/05 08:56:35 by susami            #+#    #+#             */
-/*   Updated: 2023/01/08 01:32:20 by susami           ###   ########.fr       */
+/*   Created: 2023/01/07 18:38:21 by susami            #+#    #+#             */
+/*   Updated: 2023/01/07 18:39:19 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "xlib.h"
+#include <unistd.h>
 #include "minishell.h"
 
-char	*expand_heredoc_line(char *line)
+int	xdup2(int fildes, int fildes2)
 {
-	char	*new_word;
-	char	*p;
+	int	fd;
 
-	p = line;
-	new_word = xcalloc(1, sizeof(char));
-	while (*p)
-	{
-		if (is_variable(p))
-			expand_variable_str(&new_word, &p, p);
-		else if (is_special_parameter(p))
-			expand_special_parameter_str(&new_word, &p, p);
-		else
-			append_char(&new_word, *p++);
-	}
-	free(line);
-	return (new_word);
+	fd = dup2(fildes, fildes2);
+	if (fd < 0)
+		fatal_error("xdup2");
+	return (fd);
 }

@@ -55,6 +55,13 @@ SRCS     = src/main.c\
 		   src/environ/map_put.c\
 		   src/environ/map_item.c\
 		   src/environ/environ.c\
+		   src/lib/xdup2.c\
+		   src/lib/xstrndup.c\
+		   src/lib/xcalloc.c\
+		   src/lib/xstrdup.c\
+		   src/lib/xpipe.c\
+		   src/lib/xclose.c\
+		   src/lib/xmalloc.c\
 
 OBJS     = $(SRCS:%.c=%.o)
 

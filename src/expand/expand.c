@@ -6,11 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:34 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 21:17:33 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 06:41:04 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "xlib.h"
 #include "minishell.h"
 
 #include <ctype.h>
@@ -23,9 +24,7 @@ void	append_char(char **s, char c)
 	size = 2;
 	if (*s)
 		size += ft_strlen(*s);
-	new = malloc(size);
-	if (new == NULL)
-		fatal_error("malloc");
+	new = xmalloc(size);
 	if (*s)
 		ft_strlcpy(new, *s, size);
 	new[size - 2] = c;

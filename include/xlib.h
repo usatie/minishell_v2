@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   node.c                                             :+:      :+:    :+:   */
+/*   xlib.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/05 08:56:44 by susami            #+#    #+#             */
-/*   Updated: 2023/01/08 01:35:14 by susami           ###   ########.fr       */
+/*   Created: 2023/01/07 18:46:00 by susami            #+#    #+#             */
+/*   Updated: 2023/01/13 06:15:11 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "xlib.h"
-#include "minishell.h"
+#ifndef XLIB_H
+# define XLIB_H
 
-t_node	*new_node(t_node_kind kind)
-{
-	t_node	*node;
+# include <signal.h>
+# include <sys/stat.h>
 
-	node = xcalloc(1, sizeof(*node));
-	node->kind = kind;
-	return (node);
-}
+// src/lib/
+void	*xmalloc(size_t size);
+void	*xcalloc(size_t count, size_t size);
+char	*xstrdup(const char *s1);
+char	*xstrndup(const char *s1, size_t size);
+int		xclose(int fd);
+int		xdup2(int fildes, int fildes2);
+int		xpipe(int fildes[2]);
 
-void	append_node(t_node **node, t_node *elm)
-{
-	if (*node == NULL)
-	{
-		*node = elm;
-		return ;
-	}
-	append_node(&(*node)->next, elm);
-}
+#endif

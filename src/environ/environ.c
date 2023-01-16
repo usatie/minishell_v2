@@ -6,12 +6,13 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:23 by susami            #+#    #+#             */
-/*   Updated: 2023/01/07 12:49:49 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/13 06:19:44 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <limits.h>
+#include "xlib.h"
 #include "minishell.h"
 
 static void	envmap_init(t_map *map, char **ep);
@@ -42,7 +43,7 @@ char	**get_environ(t_map *map)
 	char	**environ;
 
 	size = map_len(map, false) + 1;
-	environ = ft_calloc(size, sizeof(char *));
+	environ = xcalloc(size, sizeof(char *));
 	i = 0;
 	item = map->item_head.next;
 	while (item)
@@ -71,8 +72,10 @@ static void	envmap_init(t_map *map, char **ep)
 		map_set_attr(map, "SHLVL", "1", ATTR_EXPORT);
 	if (map_get(map, "PWD") == NULL)
 	{
-		getcwd(cwd, PATH_MAX);
-		map_set_attr(map, "PWD", cwd, ATTR_EXPORT);
+		if (getcwd(cwd, PATH_MAX) == NULL)
+			xperror3("shell-init", "getcwd", NULL);
+		else
+			map_set_attr(map, "PWD", cwd, ATTR_EXPORT);
 	}
 	map_unset(map, "OLDPWD");
 	map_set_attr(map, "OLDPWD", NULL, ATTR_EXPORT);

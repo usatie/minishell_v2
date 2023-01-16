@@ -6,12 +6,13 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:33 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 08:13:02 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 01:37:40 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include <unistd.h>
+#include "xlib.h"
 #include "minishell.h"
 
 static char	*search_path_mode(const char *filename, int mode);
@@ -67,9 +68,7 @@ static char	*search_path_mode(const char *filename, int mode)
 		set_path(path, PATH_MAX, filename, &envpath);
 		if (access(path, mode) == 0)
 		{
-			dup = ft_strdup(path);
-			if (dup == NULL)
-				fatal_error("ft_strdup");
+			dup = xstrdup(path);
 			return (dup);
 		}
 	}

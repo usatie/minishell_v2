@@ -6,11 +6,12 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:57 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:46:10 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 01:37:17 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "xlib.h"
 #include "minishell.h"
 
 static void	set_name_value(const char *string, char **name, char **value);
@@ -40,16 +41,12 @@ static void	set_name_value(const char *string, char **name, char **value)
 	name_end = ft_strchr(string, '=');
 	if (name_end == NULL)
 	{
-		*name = ft_strdup(string);
+		*name = xstrdup(string);
 		*value = NULL;
-		if (*name == NULL)
-			fatal_error("ft_strdup");
 	}
 	else
 	{
-		*name = ft_strndup(string, name_end - string);
-		*value = ft_strdup(name_end + 1);
-		if (*name == NULL || *value == NULL)
-			fatal_error("ft_strdup");
+		*name = xstrndup(string, name_end - string);
+		*value = xstrdup(name_end + 1);
 	}
 }

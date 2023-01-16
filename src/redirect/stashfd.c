@@ -6,13 +6,14 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:50 by susami            #+#    #+#             */
-/*   Updated: 2023/01/06 17:10:58 by susami           ###   ########.fr       */
+/*   Updated: 2023/01/08 22:00:50 by susami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include "xlib.h"
 #include "minishell.h"
 
 static bool	is_valid_fd(int fd)
@@ -39,10 +40,7 @@ int	stashfd(int fd)
 	stashfd = 10;
 	while (is_valid_fd(stashfd))
 		stashfd++;
-	stashfd = dup2(fd, stashfd);
-	if (stashfd < 0)
-		fatal_error("dup2");
-	if (close(fd) < 0)
-		fatal_error("close");
+	stashfd = xdup2(fd, stashfd);
+	xclose(fd);
 	return (stashfd);
 }
