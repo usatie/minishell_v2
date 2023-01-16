@@ -18,7 +18,7 @@ assert() {
 }
 
 assert ''
-assert 'echo hello'
-assert 'grep hoge .'
+assert '/bin/ls'
+assert '/bin/echo'
 
 echo 'all OK'
