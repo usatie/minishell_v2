@@ -199,7 +199,7 @@ void	expand_variable_str(char **dst, char **rest, char *p)
 	append_char(&name, *p++);
 	while (is_alpha_num_under(*p))
 		append_char(&name, *p++);
-	value = getenv(name);
+	value = xgetenv(name);
 	free(name);
 	if (value)
 		while (*value)

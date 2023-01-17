@@ -20,6 +20,8 @@ SRCS     = src/main.c\
 		   src/signal.c\
 		   src/builtin.c\
 		   src/builtin_exit.c\
+		   src/map.c\
+		   src/env.c\
 
 OBJS     = $(SRCS:%.c=%.o)
 
