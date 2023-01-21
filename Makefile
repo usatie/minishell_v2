@@ -12,6 +12,7 @@ SRCS     = src/main.c\
            src/tokenize.c\
            src/destructor.c\
            src/expand.c\
+		   src/parse.c\
 
 OBJS     = $(SRCS:%.c=%.o)
 
