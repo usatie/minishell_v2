@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:26:06 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/05 15:32:59 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/05 15:56:10 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ bool	pathname_is_valid(char *pathname, char *to_execute)
 {
 	if (!pathname)
 	{
-		printf("minishell: %s: No such file or directory\n", to_execute);
+		dprintf(STDERR_FILENO, "minishell: %s: command not found\n", to_execute);
 		return (false);
 	}
 	return (true);
@@ -72,8 +72,6 @@ void	execute(char *pathname, char **argv)
 {
 	extern char	**environ;
 
-	// printf("[%s, %s]\n", pathname, argv[0]);
-	// fflush(stdout);
 	execve(pathname, argv, environ);
 	print_error_and_exit("execve failure");
 }
@@ -94,7 +92,7 @@ int	execute_internal_command(char *to_execute)
 		if (!ft_strchr(to_execute, '/'))
 			pathname = get_filepath(to_execute);
 		else
-			pathname = ft_strtrim(to_execute, " "); //なぜか最後にスペースがついてる？
+			pathname = ft_strtrim(to_execute, " ");
 		argv[0] = pathname;
 		argv[1] = NULL;
 		if (pathname_is_valid(pathname, to_execute))
@@ -116,7 +114,7 @@ int	main(void)
 	char	*line;
 	int		exit_status;
 
-	rl_outstream = stderr; //linux shows rl_outstream output on stdout
+	rl_outstream = stderr;
 	exit_status = 0;
 	while (1)
 	{

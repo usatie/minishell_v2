@@ -21,4 +21,13 @@ assert ''
 assert '/bin/ls'
 assert '/bin/echo'
 
+assert 'pwd'
+assert 'echo'
+assert 'ls'
+assert './a.out'
+
+## no such command
+assert 'a.out'
+assert 'nosuchfile'
+
 echo 'all OK'
