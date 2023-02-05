@@ -39,9 +39,9 @@ SRCS_ = ft_isalpha\
 		ft_min\
 		ft_safe_free\
 		ft_strcmp\
-		ft_isspace\
+		ft_ltoa\
 		ft_strtol\
-		ft_ltoa
+		ft_isspace
 
 BONUS_ = ft_lstnew\
 		ft_lstadd_front\

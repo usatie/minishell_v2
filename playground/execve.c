@@ -6,14 +6,23 @@ void	test1()
 	execve("/bin/ls", argv, NULL);
 }
 
-void	test1()
+void	test2()
 {
 	char *argv[] = {"", "", NULL};
 	execve("", argv, NULL);
 }
 
+void	test3()
+{
+	char *argv[] = {"/bin/cat", "-n", "test.sh", NULL};
+	execve("/bin/cat", argv, NULL);
+}
+
 int main()
 {
 	//test1();
-	test2();
+	//test2();
+	//test3();
+	char *argv[] = {"./a.out", NULL};
+	execve("./a.out", argv, NULL);
 }
