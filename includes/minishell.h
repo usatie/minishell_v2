@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:23:03 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/08 20:25:03 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/08 23:11:43 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ typedef struct s_token
 }	t_token;
 
 void	print_error_and_exit(char *error_message);
+t_token	*tokenize(char *line);
 
 #endif

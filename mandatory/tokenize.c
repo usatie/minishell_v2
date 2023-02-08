@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:11:38 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/08 23:07:48 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/08 23:51:55 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,18 @@
 #include "../includes/libft.h"
 #include <stdio.h>
 
+//callocをつかってみたのですが、私の環境ではそれでもnextにNULLを代入しないと
+//segvしてしまいました。
 t_token	*make_token(char *word, t_type type)
 {
 	t_token	*new;
 
-	new = ft_calloc(1, sizeof(t_token *));
+	new = malloc(sizeof(t_token *));
 	if (!new)
-		print_error_and_exit("calloc failure");
+		print_error_and_exit("malloc failure");
 	new->word = word;
 	new->type = type;
+	new->next = NULL;
 	return (new);
 }
 
@@ -99,14 +102,4 @@ t_token	*tokenize(char *line)
 	}
 	tok->next = make_token(NULL, EOF);
 	return (head.next);
-}
-
-int main()
-{
-	t_token *tok = tokenize("hello abc 32 < && & 2			a");
-	while (tok)
-	{
-		printf("[%s], %d\n", tok->word, tok->type);
-		tok = tok->next;
-	}
 }
