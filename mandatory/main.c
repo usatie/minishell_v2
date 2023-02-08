@@ -6,13 +6,13 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:26:06 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/05 15:56:10 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/08 22:44:34 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "libft.h"
-#include "get_next_line.h"
+#include "../includes/minishell.h"
+#include "../includes/libft.h"
+// #include "get_next_line.h"
 #include <stdlib.h> //getenv
 #include <stdio.h> //printf
 
@@ -30,6 +30,8 @@ void	print_error_and_exit(char *error_message)
 	ft_putchar_fd('\n', STDERR_FILENO);
 	exit(1);
 }
+
+/*
 
 //add malloc failure error handling
 char	*get_filepath(char *to_execute)
@@ -68,50 +70,51 @@ bool	pathname_is_valid(char *pathname, char *to_execute)
 	return (true);
 }
 
-void	execute(char *pathname, char **argv)
-{
-	extern char	**environ;
+// void	execute(char *pathname, char **argv)
+// {
+// 	extern char	**environ;
 
-	execve(pathname, argv, environ);
-	print_error_and_exit("execve failure");
-}
+// 	execve(pathname, argv, environ);
+// 	print_error_and_exit("execve failure");
+// }
 
-int	execute_internal_command(char *to_execute)
-{
-	pid_t	pid;
-	char	**argv;
-	char	*pathname;
-	int		wait_status;
+// int	execute(t_token *tok)
+// {
+// 	pid_t	pid;
+// 	char	**argv;
+// 	char	*pathname;
+// 	int		wait_status;
 
-	pid = fork();
-	if (pid == -1)
-		print_error_and_exit("fork failure");
-	else if (pid == 0)
-	{
-		argv = malloc(sizeof(char *) * 2);
-		if (!ft_strchr(to_execute, '/'))
-			pathname = get_filepath(to_execute);
-		else
-			pathname = ft_strtrim(to_execute, " ");
-		argv[0] = pathname;
-		argv[1] = NULL;
-		if (pathname_is_valid(pathname, to_execute))
-			execute(pathname, argv);
-		else
-			return (127);
-		free(pathname);
-		free(argv);
-	}
-	else
-	{
-		wait(&wait_status);
-		return (WEXITSTATUS(wait_status));
-	}
-}
+// 	pid = fork();
+// 	if (pid == -1)
+// 		print_error_and_exit("fork failure");
+// 	else if (pid == 0)
+// 	{
+// 		argv = malloc(sizeof(char *) * 2);
+// 		if (!ft_strchr(to_execute, '/'))
+// 			pathname = get_filepath(to_execute);
+// 		else
+// 			pathname = ft_strtrim(to_execute, " ");
+// 		argv[0] = pathname;
+// 		argv[1] = NULL;
+// 		if (pathname_is_valid(pathname, to_execute))
+// 			execute(pathname, argv);
+// 		else
+// 			return (127);
+// 		free(pathname);
+// 		free(argv);
+// 	}
+// 	else
+// 	{
+// 		wait(&wait_status);
+// 		return (WEXITSTATUS(wait_status));
+// 	}
+// }
 
 int	main(void)
 {
 	char	*line;
+	t_token	*tok;
 	int		exit_status;
 
 	rl_outstream = stderr;
@@ -124,9 +127,11 @@ int	main(void)
 		if (*line)
 		{
 			add_history(line);
-			exit_status = execute_internal_command(line);
+			tok = tokenize(line);
+			// exit_status = execute(tok);
 		}
 		free(line);
 	}
 	return (exit_status);
 }
+*/

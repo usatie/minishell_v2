@@ -1,16 +1,34 @@
 NAME = minishell
 
+SRC_FILES = main\
+			tokenize
+
+SRCS = $(foreach src,$(SRC_FILES),./mandatory/$(src).c)
+OBJS = $(SRCS:.c=.o)
+
 INCLUDES = -I ./includes
 
 LIBFTPRINTFDIR = ./lib/printf
 GNLDIR = ./lib/gnl
 
-FT_PRINTF = ./lib/printf/libftprintf.a
+FT_LIBFTPRINTF = ./lib/printf/libftprintf.a
 GNL = ./lib/gnl/get_next_line.a 
 
-LIBS = -lreadline -L$(PRINTFDIR) -lftprintf
+LIBS = -lreadline -L$(LIBFTPRINTFDIR) -lftprintf
 
-$(NAME): mandatory/main.c
+$(NAME): $(OBJS)
 	make -C $(LIBFTPRINTFDIR)
 	make -C $(GNLDIR)
-	gcc $(INCLUDES) mandatory/main.c -o $(NAME) $(FT_PRINTF) $(GNL) $(LIBS)
+	gcc $(INCLUDES) $(OBJS) -o $@ $(LIBS) $(FT_LIBFTPRINTF) $(GNL)
+
+clean:
+	make fclean -C $(LIBFTPRINTFDIR)
+	make fclean -C $(GNLDIR)
+	$(RM) $(OBJS)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
