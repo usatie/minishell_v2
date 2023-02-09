@@ -1,7 +1,8 @@
 NAME = minishell
 
 SRC_FILES = main\
-			tokenize
+			tokenize\
+			expand
 
 SRCS = $(foreach src,$(SRC_FILES),./mandatory/$(src).c)
 OBJS = $(SRCS:.c=.o)
@@ -15,6 +16,8 @@ FT_LIBFTPRINTF = ./lib/printf/libftprintf.a
 GNL = ./lib/gnl/get_next_line.a 
 
 LIBS = -lreadline -L$(LIBFTPRINTFDIR) -lftprintf
+
+all: $(NAME)
 
 $(NAME): $(OBJS)
 	make -C $(LIBFTPRINTFDIR)

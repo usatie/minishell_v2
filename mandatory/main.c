@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:26:06 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/09 04:27:58 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/09 04:35:32 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*get_filepath(char *to_execute)
 	path_env = getenv("PATH");
 	while (*path_env)
 	{
-		end = strchr(path_env, ':');
+		end = ft_strchr(path_env, ':');
 		if (end)
 			pathname = ft_substr(path_env, 0, end - path_env);
 		else
@@ -179,7 +179,7 @@ int	main(void)
 		{
 			add_history(line);
 			tok = tokenize(line);
-			//tok = expand(tok);
+			expand(tok);
 			exit_status = execute(tok);
 		}
 		free(line);
