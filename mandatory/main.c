@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:26:06 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/09 04:35:32 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/10 07:29:01 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	token_count(t_token *tok)
 	return (count);
 }
 
-char	**make_argv(t_token *tok)
+char	**argv_from_tok_list(t_token *tok)
 {
 	int		i;
 	char	**argv;
@@ -122,7 +122,7 @@ int	exec(t_token *tok)
 		pathname = get_filepath(to_execute);
 	else
 		pathname = ft_strtrim(to_execute, " ");
-	argv = make_argv(tok);
+	argv = argv_from_tok_list(tok);
 	if (pathname_is_valid(pathname, to_execute))
 		execve_func(pathname, argv);
 	else
@@ -162,10 +162,23 @@ void	free_tokens(t_token *tok)
 	}
 }
 
+// void	print_node(t_node *node)
+// {
+// 	printf("-------------------------\n");
+// 	while (node->args)
+// 	{
+// 		printf("%s\n", node->args->word);
+// 		node->args = node->args->next;
+// 	}
+// 	printf("-------------------------\n\n");
+// }
+
+//add free node
 int	main(void)
 {
 	char	*line;
 	t_token	*tok;
+	t_node	*node;
 	int		exit_status;
 
 	rl_outstream = stderr;
@@ -179,6 +192,8 @@ int	main(void)
 		{
 			add_history(line);
 			tok = tokenize(line);
+			node = parser(tok);
+//			print_node(node);
 			expand(tok);
 			exit_status = execute(tok);
 		}

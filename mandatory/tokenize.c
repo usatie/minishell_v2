@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:11:38 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/09 04:29:08 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/10 05:00:26 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../includes/libft.h"
 #include <stdio.h>
 
-t_token	*make_token(char *word, t_type type)
+t_token	*make_token(char *word, t_token_type type)
 {
 	t_token	*new;
 

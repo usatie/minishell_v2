@@ -2,7 +2,8 @@ NAME = minishell
 
 SRC_FILES = main\
 			tokenize\
-			expand
+			expand\
+			parser
 
 SRCS = $(foreach src,$(SRC_FILES),./mandatory/$(src).c)
 OBJS = $(SRCS:.c=.o)
