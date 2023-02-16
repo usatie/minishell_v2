@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 04:32:24 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/09 23:11:39 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/16 21:48:23 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,19 @@ void	quote_removal(t_token *tok)
 	tok->word = expanded;
 }
 
-void	expand(t_token *tok)
+void	expand(t_node *node)
 {
-	while (tok)
+	t_token	*token;
+
+	while (node)
 	{
-		if (tok->type == WORD)
-			quote_removal(tok);
-		tok = tok->next;
+		token = node->args;
+		while (token)
+		{
+			if (token->type == WORD)
+				quote_removal(token);
+			token = token->next;
+		}
+		node = node->next;
 	}
 }

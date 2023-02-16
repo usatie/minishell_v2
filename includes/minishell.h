@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:23:03 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/10 07:25:53 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/16 21:49:53 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 # define MINISHELL_H
 
 # include <stdbool.h>
+# include <stdio.h>
+
+// extern bool	g_syntax_error;
 
 typedef enum e_token_type
 {
 	WORD,
-	BLANK,
 	RESERVED,
 	OPERATOR,
-	EOF,
+	NIL,
 }	t_token_type;
 
 typedef struct s_token
@@ -50,7 +52,7 @@ bool	is_blank(char c);
 bool	is_operator(char c);
 
 t_token	*tokenize(char *line);
-void	expand(t_token *tok);
+void	expand(t_node *node);
 t_node	*parser(t_token *tok);
 
 #endif

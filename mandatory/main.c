@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:26:06 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/10 07:29:01 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/16 21:50:22 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,8 @@ char	**argv_from_tok_list(t_token *tok)
 		print_error_and_exit("malloc failure");
 	while (tok)
 	{
-		if (tok->type != BLANK)
-		{
-			argv[i] = tok->word;
-			i++;
-		}
+		argv[i] = tok->word;
+		i++;
 		tok = tok->next;
 	}
 	return (argv);
@@ -132,7 +129,7 @@ int	exec(t_token *tok)
 	return (0);
 }
 
-int	execute(t_token *tok)
+int	execute(t_node *node)
 {
 	pid_t	pid;
 	int		wait_status;
@@ -141,7 +138,7 @@ int	execute(t_token *tok)
 	if (pid == -1)
 		print_error_and_exit("fork failure");
 	else if (pid == 0)
-		exec(tok);
+		exec(node->args);
 	else
 	{
 		wait(&wait_status);
@@ -161,17 +158,6 @@ void	free_tokens(t_token *tok)
 		free(tmp);
 	}
 }
-
-// void	print_node(t_node *node)
-// {
-// 	printf("-------------------------\n");
-// 	while (node->args)
-// 	{
-// 		printf("%s\n", node->args->word);
-// 		node->args = node->args->next;
-// 	}
-// 	printf("-------------------------\n\n");
-// }
 
 //add free node
 int	main(void)
@@ -193,12 +179,12 @@ int	main(void)
 			add_history(line);
 			tok = tokenize(line);
 			node = parser(tok);
-//			print_node(node);
-			expand(tok);
-			exit_status = execute(tok);
+			expand(node);
+			exit_status = execute(node);
 		}
 		free(line);
 		free_tokens(tok);
+		//free_nodes(node);
 	}
 	return (exit_status);
 }

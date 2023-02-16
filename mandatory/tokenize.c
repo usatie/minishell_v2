@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:11:38 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/10 05:00:26 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/16 21:51:29 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,6 @@ bool	is_blank(char c)
 bool	is_operator(char c)
 {
 	return (c && ft_strchr("|&()<>", c));
-}
-
-t_token	*blank(char *line)
-{
-	char	*blank;
-	size_t	blank_len;
-
-	blank_len = 0;
-	while (is_blank(line[blank_len]))
-		blank_len++;
-	blank = ft_substr(line, 0, blank_len);
-	if (!blank)
-		print_error_and_exit("substr failure");
-	return (make_token(blank, BLANK));
 }
 
 t_token	*operator(char *line)
@@ -117,16 +103,16 @@ t_token	*tokenize(char *line)
 	tok = &head;
 	while (*line)
 	{
-		if (is_blank(*line))
-			tok->next = blank(line);
-		else if (is_operator(*line))
+		while (is_blank(*line))
+			line++;
+		if (is_operator(*line))
 			tok->next = operator(line);
 		else
 			tok->next = word(line);
 		tok = tok->next;
 		line += ft_strlen(tok->word);
 	}
-	tok->next = make_token(NULL, EOF);
+	tok->next = make_token(NULL, NIL);
 	//print_tokens(head.next);
 	return (head.next);
 }
