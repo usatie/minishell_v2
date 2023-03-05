@@ -23,6 +23,6 @@ int main()
 	//test1();
 	//test2();
 	//test3();
-	char *argv[] = {"./a.out", NULL};
-	execve("./a.out", argv, NULL);
+	char *argv[] = {"2 > abc", NULL};
+	execve("2", argv, NULL);
 }

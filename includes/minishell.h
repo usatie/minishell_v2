@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:23:03 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/16 21:49:53 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/03/06 03:04:19 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 typedef enum e_token_type
 {
 	WORD,
-	RESERVED,
 	OPERATOR,
 	NIL,
 }	t_token_type;
@@ -36,12 +35,28 @@ typedef struct s_token
 typedef enum e_node_type
 {
 	SIMPLE_COMMAND,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
 }	t_node_type;
 
+// Redirecting output example
+command          : "echo hello; 1 > out"
+// targetfd         : 1
+// filename         : "out"
+// filefd           : open("out")
+// stashed_targetfd : dup(targetfd)
+
+typedef struct s_redir
+{
+	int	infile;
+	int	outfile;
+}	t_redir;
 typedef struct s_node
 {
-	t_token			*args;
 	t_node_type		type;
+	t_token			*args;
+	t_redir			*redir;
 	struct s_node	*next;
 }	t_node;
 
@@ -52,7 +67,8 @@ bool	is_blank(char c);
 bool	is_operator(char c);
 
 t_token	*tokenize(char *line);
-void	expand(t_node *node);
 t_node	*parser(t_token *tok);
+void	expand(t_node *node);
+void	execute(t_node *node);
 
 #endif

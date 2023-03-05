@@ -2,6 +2,7 @@
 	"files.associations": {
 		"minishell.h": "c",
 		"libft.h": "c",
-		"get_next_line.h": "c"
+		"get_next_line.h": "c",
+		"wait.h": "c"
 	}
 }

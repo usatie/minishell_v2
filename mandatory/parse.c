@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 04:49:33 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/16 21:49:26 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/03/02 17:32:30 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_token	*arg_last(t_token *args)
 	return (args);
 }
 
-void	append_token_to_args(t_token **args, t_token *tok_to_add)
+void	append_token(t_token **args, t_token *tok_to_add)
 {
 	t_token	*last_arg;
 
@@ -54,26 +54,75 @@ void	print_parser_error(char *location)
 	ft_putendl_fd("'", STDERR_FILENO);
 }
 
-t_node	*parser(t_token *tok)
+t_node	*make_node(t_node_type type)
 {
 	t_node	*node;
 
-	node = ft_calloc(2, sizeof(t_node *));
+	node = ft_calloc(1, sizeof(t_node *));
 	if (!node)
 		print_error_and_exit("calloc failure");
+	node->type = type;
+	node->args = NULL;
+	node->redir = NULL;
+	node->next = NULL;
+}
+
+t_redir	*make_redir_struct(void)
+{
+	t_redir	*redir;
+
+	redir = ft_calloc(1, sizeof(t_redir *));
+	if (!redir)
+		print_error_and_exit("calloc failure");
+	redir->infile = STDIN_FILENO;
+	redir->outfile = STDOUT_FILENO;
+	return (redir);
+}
+
+t_node	*redir_in_node(t_token *tok)
+{
+	t_node	*redir_in;
+
+	redir_in = make_node(REDIR_IN); 
+	redir_in->redir = make_redir_struct();
+	return (redir_in);
+}
+
+void	append_node(t_node **node, t_token *tok)
+{
+	t_node	*new_node;
+
+	if (!ft_strcmp("<", tok->word))
+		new_node = redir_in_node(tok);
+	else if (!ft_strcmp(">", tok->word))
+		new_node = make_node(REDIR_OUT);
+	else if (!ft_strcmp(">>", tok->word))
+		new_node = make_node(REDIR_APPEND);
+	// else if (!ft_strcmp("<<", tok->word))
+	(*node)->next = new_node;
+	*node = (*node)->next;
+}
+
+//"<<", ">>", "<", ">", "|", 		"(", ")", "&&", "||"
+t_node	*parser(t_token *tok)
+{
+	t_node	*node;
+	t_node	*node_head;
+
+	node = make_node(SIMPLE_COMMAND);
+	node_head = node;
 	while (tok && tok->type != NIL)
 	{
 		if (tok->type == WORD)
-		{
-			append_token_to_args(&node->args, tokdup(tok));
-			tok = tok->next;
-		}
+			append_token(&node->args, tokdup(tok));
 		else
 		{
-			printf("tok->type:%d\n", tok->type);
-			print_parser_error(tok->word);
+			append_node(&node, tok);
+			tok = tok->next;
 		}
+		if (tok)
+			tok = tok->next;
 	}
 	node->next = NULL;
-	return (node);
+	return (node_head);
 }

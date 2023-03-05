@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:11:38 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/16 21:51:29 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/02/24 01:35:29 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*operator(char *line)
 	int			i;
 	char		*operator;
 	const char	*operators[] = \
-	{"&&", "<<", ">>", "||", "&", "<", ">", "|", "(", ")", NULL};
+	{"&&", "<<", ">>", "||", "<", ">", "|", "(", ")", NULL};
 
 	i = 0;
 	while (ft_strncmp(operators[i], line, ft_strlen(operators[i])))
@@ -51,6 +51,20 @@ t_token	*operator(char *line)
 	if (!operator)
 		print_error_and_exit("strdup failure");
 	return (make_token(operator, OPERATOR));
+}
+
+t_token	*blank(char *line)
+{
+	char	*blank;
+	size_t	blank_len;
+
+	blank_len = 0;
+	while (is_blank(line[blank_len]))
+		blank_len++;
+	blank = ft_substr(line, 0, blank_len);
+	if (!blank)
+		print_error_and_exit("substr failure");
+	return (make_token(blank, BLANK));
 }
 
 size_t	count_till_closing_quote(char *start_of_quote)
@@ -85,16 +99,6 @@ t_token	*word(char *line)
 	return (make_token(word, WORD));
 }
 
-// void	print_tokens(t_token *tok)
-// {
-// 	while (tok)
-// 	{
-// 		printf("[%s]\n", tok->word);
-// 		fflush(stdout);
-// 		tok = tok->next;
-// 	}
-// }
-
 t_token	*tokenize(char *line)
 {
 	t_token	*tok;
@@ -103,8 +107,8 @@ t_token	*tokenize(char *line)
 	tok = &head;
 	while (*line)
 	{
-		while (is_blank(*line))
-			line++;
+		if (is_blank(*line))
+			tok->next = blank(line);
 		if (is_operator(*line))
 			tok->next = operator(line);
 		else
@@ -113,7 +117,6 @@ t_token	*tokenize(char *line)
 		line += ft_strlen(tok->word);
 	}
 	tok->next = make_token(NULL, NIL);
-	//print_tokens(head.next);
 	return (head.next);
 }
 
