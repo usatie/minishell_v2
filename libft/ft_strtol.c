@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 23:18:22 by susami            #+#    #+#             */
-/*   Updated: 2022/12/22 17:27:39 by susami           ###   ########.fr       */
+/*   Updated: 2023/03/18 21:39:14 by snara            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include "libft.h"
 
 static BOOL	is_cut(unsigned long current, unsigned long next,
-	unsigned long base)
+	unsigned long base, BOOL isneg)
 {
 	unsigned long	cutoff;
 	unsigned long	cutlim;
 
-	cutoff = LONG_MAX / base;
-	cutlim = LONG_MAX % base;
+	cutoff = (LONG_MAX + isneg) / base;
+	cutlim = (LONG_MAX + isneg) % base;
 	if (current > cutoff || (current == cutoff && next > cutlim))
 		return (TRUE);
 	else
@@ -60,7 +60,7 @@ static BOOL	internal_strtol(const char **str, int base,
 	*ul_val = 0;
 	while (ft_isdigit(**str))
 	{
-		if (is_cut(*ul_val, (unsigned long)**str - '0', (unsigned long)base))
+		if (is_cut(*ul_val, (unsigned long)**str - '0', base, *isneg))
 			overflow = TRUE;
 		if (!overflow)
 			*ul_val = (*ul_val) * (unsigned long)base

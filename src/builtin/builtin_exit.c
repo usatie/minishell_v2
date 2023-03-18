@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:17 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 22:12:47 by susami           ###   ########.fr       */
+/*   Updated: 2023/03/18 21:30:52 by snara            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 bool	is_numeric(char *s)
 {
+	if (*s == '-' || *s == '+')
+		s++;
 	if (!ft_isdigit(*s))
 		return (false);
 	while (*s)

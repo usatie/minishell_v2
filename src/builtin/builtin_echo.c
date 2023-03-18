@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:55:56 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:50:20 by susami           ###   ########.fr       */
+/*   Updated: 2023/03/18 21:39:44 by snara            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	builtin_echo(char **argv)
 
 	i = 1;
 	echo_newline = true;
-	if (argv[1] && ft_strncmp(argv[1], "-n", 2) == 0)
+	if (argv[1] && ft_strncmp(argv[1], "-n", 3) == 0)
 	{
 		i++;
 		echo_newline = false;

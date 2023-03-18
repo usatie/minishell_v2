@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 09:52:40 by susami            #+#    #+#             */
-/*   Updated: 2022/12/22 18:40:57 by susami           ###   ########.fr       */
+/*   Updated: 2023/03/18 21:43:32 by snara            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define LIBFT_H
 # include <stddef.h>
 # define BOOL	int
-# define TRUE	1
-# define FALSE	0
+# define TRUE	1u
+# define FALSE	0u
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
