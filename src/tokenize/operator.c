@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:54 by susami            #+#    #+#             */
-/*   Updated: 2023/01/08 01:37:58 by susami           ###   ########.fr       */
+/*   Updated: 2023/03/18 21:48:59 by snara            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ DEFINITIONS
 // Check longer operators first
 t_token	*operator(char **rest, char *line)
 {
-	static char *const	operators[] = {">>", "<<", "||", "&&", ";;", "<", ">",
-		"&", ";", "(", ")", "|", "\n"};
+	static char *const	operators[] = {">>", "<<", "<", ">", "|", "\n"};
 	size_t				i;				
 	char				*op;
 

@@ -6,7 +6,7 @@
 /*   By: susami <susami@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 08:56:53 by susami            #+#    #+#             */
-/*   Updated: 2023/01/05 21:46:10 by susami           ###   ########.fr       */
+/*   Updated: 2023/03/18 21:47:26 by snara            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ bool	is_metacharacter(char c)
 {
 	if (is_blank(c))
 		return (true);
-	return (c && ft_strchr("|&;()<>\n", c));
+	return (c && ft_strchr("|<>\n", c));
 }
