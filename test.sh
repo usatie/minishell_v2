@@ -339,10 +339,18 @@ assert './infinite_loop'
 ## exit
 assert 'exit'
 assert 'exit 42'
+assert 'exit -42'
+assert 'exit +42'
 assert 'exit ""'
 assert 'exit hello'
 assert 'exit 42Tokyo'
 assert 'exit 1 2'
+assert 'exit 9223372036854775806'
+assert 'exit 9223372036854775807'
+assert 'exit 9223372036854775808'
+assert 'exit -9223372036854775807'
+assert 'exit -9223372036854775808'
+assert 'exit -9223372036854775809'
 
 ## export
 print_desc "Output of 'export' differs, but it's ok."
@@ -411,6 +419,9 @@ assert 'echo -n'
 assert 'echo -n hello'
 assert 'echo -n hello world'
 assert 'echo hello -n'
+assert 'echo -nn'
+assert 'echo -n-n-n'
+assert 'echo ";|()"'
 
 ## pwd
 assert 'pwd'
