@@ -83,6 +83,11 @@ fclean: clean
 
 re: fclean all
 
+bonus: all
+
+install:
+	brew install readline
+
 test: all
 	./test.sh
 
