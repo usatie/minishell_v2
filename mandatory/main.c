@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:26:06 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/18 07:36:34 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:15:54 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,6 @@
 #include <readline/history.h>
 
 #include <stdlib.h> //getenv
-
-void	free_tokens(t_token *tok)
-{
-	t_token	*tmp;
-
-	while (tok)
-	{
-		tmp = tok;
-		tok = tok->next;
-		free(tmp->word);
-		free(tmp);
-	}
-}
-
-void	free_nodes(t_node *nodes)
-{
-	t_node	*tmp;
-
-	while (nodes)
-	{
-		tmp = nodes;
-		nodes = nodes->next;
-		free (tmp);
-	}
-}
 
 int	main(void)
 {
@@ -58,12 +33,14 @@ int	main(void)
 			add_history(line);
 			tok = tokenize(line);
 			node = parser(tok);
-			expand(node);
+			//expand(node);
+			set_up_redirect(node);
 			execute(node);
+			reset_redirect(node);
+			free(line);
+			free_tokens(tok);
+			free_nodes(node);
 		}
-		free(line);
-		free_tokens(tok);
-		free_nodes(node);
 	}
-	// return (exit_status);
+	return (EXIT_SUCCESS);
 }

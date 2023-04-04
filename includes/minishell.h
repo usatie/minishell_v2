@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:23:03 by myoshika          #+#    #+#             */
-/*   Updated: 2023/03/06 03:04:19 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:08:26 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,16 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef enum e_node_type
+typedef enum e_type
 {
 	SIMPLE_COMMAND,
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
-}	t_node_type;
+}	t_type;
 
 // Redirecting output example
-command          : "echo hello; 1 > out"
+//command          : "echo hello; 1 > out"
 // targetfd         : 1
 // filename         : "out"
 // filefd           : open("out")
@@ -49,12 +49,15 @@ command          : "echo hello; 1 > out"
 
 typedef struct s_redir
 {
-	int	infile;
-	int	outfile;
+	int		infile;
+	int		outfile;
+	char	*filename;
+	int		file_fd;
+	int		stashed_fd;
 }	t_redir;
 typedef struct s_node
 {
-	t_node_type		type;
+	t_type			type;
 	t_token			*args;
 	t_redir			*redir;
 	struct s_node	*next;
@@ -70,5 +73,8 @@ t_token	*tokenize(char *line);
 t_node	*parser(t_token *tok);
 void	expand(t_node *node);
 void	execute(t_node *node);
+
+void	free_tokens(t_token *tok);
+void	free_nodes(t_node *nodes);
 
 #endif

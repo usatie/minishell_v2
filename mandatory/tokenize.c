@@ -6,7 +6,7 @@
 /*   By: myoshika <myoshika@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:11:38 by myoshika          #+#    #+#             */
-/*   Updated: 2023/02/24 01:35:29 by myoshika         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:34:20 by myoshika         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,6 @@ t_token	*operator(char *line)
 	return (make_token(operator, OPERATOR));
 }
 
-t_token	*blank(char *line)
-{
-	char	*blank;
-	size_t	blank_len;
-
-	blank_len = 0;
-	while (is_blank(line[blank_len]))
-		blank_len++;
-	blank = ft_substr(line, 0, blank_len);
-	if (!blank)
-		print_error_and_exit("substr failure");
-	return (make_token(blank, BLANK));
-}
-
 size_t	count_till_closing_quote(char *start_of_quote)
 {
 	size_t	len;
@@ -107,8 +93,8 @@ t_token	*tokenize(char *line)
 	tok = &head;
 	while (*line)
 	{
-		if (is_blank(*line))
-			tok->next = blank(line);
+		while (is_blank(*line))
+			line++;
 		if (is_operator(*line))
 			tok->next = operator(line);
 		else
@@ -119,4 +105,3 @@ t_token	*tokenize(char *line)
 	tok->next = make_token(NULL, NIL);
 	return (head.next);
 }
-
