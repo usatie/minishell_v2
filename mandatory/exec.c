@@ -21,13 +21,6 @@
 #include <sys/wait.h>
 #include <unistd.h> //access
 
-void	print_error_and_exit(char *error_message)
-{
-	ft_putstr_fd(error_message, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
-	exit(1);
-}
-
 char	*get_filepath(char *to_execute)
 {
 	char	*path_env;

@@ -37,12 +37,34 @@ bool	is_operator(char c)
 	return (c && ft_strchr("|&()<>", c));
 }
 
+t_token_type	get_operator_type(char *operator)
+{
+	if (!ft_strcmp(operator, "&&"))
+		return (AND);
+	else if (!ft_strcmp(operator, "||"))
+		return (OR);
+	else if (!ft_strcmp(operator, ">>"))
+		return (REDIR_APPEND);
+	else if (!ft_strcmp(operator, "<<"))
+		return (HEREDOC);
+	else if (!ft_strcmp(operator, "<"))
+		return (REDIR_);
+	else if (!ft_strcmp(operator, ">"))
+		return (REDIR_);
+	else if (!ft_strcmp(operator, "("))
+		return (OPEN_PARENTHESIS);
+	else if (!ft_strcmp(operator, ")"))
+		return (CLOSE_PARENTHESIS);
+	else if (!ft_strcmp(operator, "|"))
+		return (PIPE);
+}
+
 t_token	*operator(char *line)
 {
 	int			i;
 	char		*operator;
 	const char	*operators[] = \
-	{"&&", "<<", ">>", "||", "<", ">", "|", "(", ")", NULL};
+	{"&&", "||", "<<", ">>", "<", ">", "|", "(", ")", NULL};
 
 	i = 0;
 	while (ft_strncmp(operators[i], line, ft_strlen(operators[i])))
@@ -50,7 +72,7 @@ t_token	*operator(char *line)
 	operator = ft_strdup(operators[i]);
 	if (!operator)
 		print_error_and_exit("strdup failure");
-	return (make_token(operator, OPERATOR));
+	return (make_token(operator, get_operator_type(operator)));
 }
 
 size_t	count_till_closing_quote(char *start_of_quote)

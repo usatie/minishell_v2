@@ -16,13 +16,33 @@
 
 #include <stdlib.h> //getenv
 
-int	main(void)
+void	run_command(char *line)
 {
-	char	*line;
 	t_token	*tok;
 	t_node	*node;
 
-	rl_outstream = stderr;
+	tok = tokenize(line);
+	node = parser(tok);
+	/*
+	if (!error)
+	{
+		//expand(node);
+		set_up_redirect(node);
+		execute(node);
+		reset_redirect(node);
+	}
+	else
+		set_exit_status
+	*/
+	free_tokens(tok);
+	free_nodes(node);
+}
+
+int	main(void)
+{
+	char	*line;
+
+	// rl_outstream = stderr;
 	while (1)
 	{
 		line = readline("> ");
@@ -31,16 +51,8 @@ int	main(void)
 		if (*line)
 		{
 			add_history(line);
-			tok = tokenize(line);
-			node = parser(tok);
-			//expand(node);
-			set_up_redirect(node);
-			execute(node);
-			reset_redirect(node);
+			run_command(line);
 			free(line);
-			free_tokens(tok);
-			free_nodes(node);
 		}
 	}
-	return (EXIT_SUCCESS);
 }

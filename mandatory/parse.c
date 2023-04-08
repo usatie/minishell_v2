@@ -145,10 +145,9 @@ void	append_node(t_node *node, t_token *tok)
 //"<<", ">>", "<", ">", "|", 		"(", ")", "&&", "||"
 t_node	*parser(t_token *tok)
 {
-	t_node	*node;
-	t_node	*node_head;
+	t_node	*new_node;
 
-	node = make_node(SIMPLE_COMMAND);
+	new_node = make_node(SIMPLE_COMMAND);
 	node_head = node;
 	while (tok && tok->type != NIL)
 	{
@@ -162,6 +161,5 @@ t_node	*parser(t_token *tok)
 		// if (tok)
 			tok = tok->next;
 	}
-	node->next = NULL;
-	return (node_head);
+	return ();
 }
